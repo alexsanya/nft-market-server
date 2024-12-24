@@ -1,5 +1,6 @@
 import { envs } from './core/config/env';
 import { Server } from './server';
+import { AppRoutes } from './routes';
 
 (() => {
 	main();
@@ -7,7 +8,9 @@ import { Server } from './server';
 
 function main(): void {
 	const server = new Server({
-		port: envs.PORT
+		port: envs.PORT,
+		apiPrefix: envs.API_PREFIX,
+		routes: AppRoutes.routes
 	});
 	void server.start();
 }

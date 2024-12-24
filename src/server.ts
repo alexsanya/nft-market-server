@@ -1,4 +1,4 @@
-import express, { type Request, type Response } from 'express';
+import express, { type Request, type Response, type Router } from 'express';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 
@@ -6,15 +6,21 @@ import { HttpCode, ONE_HUNDRED, ONE_THOUSAND, SIXTY } from './core/constants';
 
 interface ServerOptions {
 	port: number;
+	routes: Router;
+	apiPrefix: string;
 }
 
 export class Server {
 	private readonly app = express();
 	private readonly port: number;
+	private readonly routes: Router;
+	private readonly apiPrefix: string;
 
 	constructor(options: ServerOptions) {
-		const { port } = options;
+		const { port, routes, apiPrefix } = options;
 		this.port = port;
+		this.routes = routes;
+		this.apiPrefix = apiPrefix;
 	}
 
 	async start(): Promise<void> {
@@ -31,6 +37,8 @@ export class Server {
 			})
 		);
 
+		this.app.use(this.apiPrefix, this.routes);
+		
 		// Test rest api
 		this.app.get('/', (_req: Request, res: Response) => {
 			return res.status(HttpCode.OK).send({
