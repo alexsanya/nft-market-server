@@ -1,21 +1,28 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, ONE, TEN } from '../../../core';
+import { type SuccessResponse, HttpCode, ONE, TEN } from '../../../core';
 import { PaginationDto, type PaginationResponseEntity } from '../../shared';
 
 import {
+    CreateListingDto,
     GetListings,
 	type ListingEntity,
 	type ListingRepository
 } from '../domain';
+import { Signature } from 'ethers';
+import { CreateListing } from '../domain/usecases/create.usecase';
 
 interface Params {
 	id: string;
 }
 
 interface RequestBody {
-	text: string;
-	isCompleted: string;
+    owner: string;
+    chainId: number;
+    minPriceCents: number;
+    nftContract: string;
+    tokenId: number;
+    signature: Signature;
 }
 
 interface RequestQuery {
@@ -40,5 +47,18 @@ export class ListingsController {
 			.catch((error) => {
 				next(error);
 			});
+	};
+
+    public create = (
+		req: Request<unknown, unknown, RequestBody>,
+		res: Response<SuccessResponse<ListingEntity>>,
+		next: NextFunction
+	): void => {
+		const { owner, chainId, minPriceCents, nftContract, tokenId, signature } = req.body;
+		const createDto = CreateListingDto.create({ owner, chainId, minPriceCents, nftContract, tokenId, signature });
+		new CreateListing(this.repository)
+			.execute(createDto)
+			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
+			.catch(next);
 	};
 }

@@ -13,6 +13,7 @@ export class ListingsRoutes {
 		const controller = new ListingsController(repository);
 
 		router.get('/', controller.getAll);
+        router.post('/', controller.create);
 
 		return router;
 	}

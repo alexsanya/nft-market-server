@@ -13,3 +13,9 @@ export interface ErrorResponse {
 	validationErrors?: ValidationType[];
 	stack?: string;
 }
+
+export interface Signature {
+    v: number;
+    r: string;
+    s: string;
+}

@@ -2,11 +2,11 @@ import { type PaginationDto, type PaginationResponseEntity } from '../../../shar
 import { type ListingEntity } from '../entities';
 import { type ListingRepository } from '../repositories/repository';
 
-export interface GetTodosUseCase {
+export interface GetListingsUseCase {
 	execute: (pagination: PaginationDto) => Promise<PaginationResponseEntity<ListingEntity[]>>;
 }
 
-export class GetListings implements GetTodosUseCase {
+export class GetListings implements GetListingsUseCase {
 	constructor(private readonly repository: ListingRepository) {}
 
 	async execute(pagination: PaginationDto): Promise<PaginationResponseEntity<ListingEntity[]>> {
