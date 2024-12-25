@@ -1,6 +1,8 @@
+import { AbiCoder, arrayify, keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 import { type ValidationType, AppError, ZERO, ADDRESS_REGEX } from '../../../../core';
 import { type CoreDto } from '../../../shared';
 import { SignatureDto } from './signature.dto';
+import { isDefinedAndValidNumber } from '../../infrastructure';
 
 export class CreateListingDto implements CoreDto<CreateListingDto> {
 	private constructor(
@@ -9,6 +11,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		public readonly minPriceCents: number,
 		public readonly nftContract: string,
 		public readonly tokenId: number,
+		public readonly nonce: number,
 		public readonly signature: SignatureDto,
 	) {
 		this.validate(this);
@@ -16,7 +19,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 
 	public validate(dto: CreateListingDto): void {
 		const errors: ValidationType[] = [];
-		const { owner, chainId, minPriceCents, nftContract, tokenId } = dto;
+		const { owner, chainId, minPriceCents, nftContract, tokenId, nonce } = dto;
 
 		if (!owner ||  (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
 			errors.push({ fields: ['owner'], constraint: 'Owner is required and must be an address' });
@@ -27,7 +30,10 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		if (!chainId) {
 			errors.push({ fields: ['chainId'], constraint: 'chainId is required' });
 		}
-		if (!tokenId) {
+		if (!isDefinedAndValidNumber(nonce)) {
+			errors.push({ fields: ['nonce'], constraint: 'nonce is required' });
+		}
+		if (!isDefinedAndValidNumber(tokenId)) {
 			errors.push({ fields: ['tokenId'], constraint: 'tokenId is required' });
 		}
 		if (!minPriceCents) {
@@ -45,7 +51,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 	 */
 	public static create(object: Record<string, unknown>): CreateListingDto {
 		const errors: ValidationType[] = [];
-		const { owner, chainId, minPriceCents, nftContract, tokenId, signature } = object;
+		const { owner, chainId, minPriceCents, nftContract, tokenId, signature, nonce } = object;
 		if (!signature || typeof(signature) !== "object") {
 			errors.push({ fields: ['signature'], constraint: 'signature is required' });
 		}
@@ -57,6 +63,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 			minPriceCents as number,
 			nftContract as string,
 			tokenId as number,
+			nonce as number,
 			signatureDto as SignatureDto
 		);
 	}
@@ -68,11 +75,36 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 			minPriceCents: this.minPriceCents,
 			nftContract: this.nftContract,
 			tokenId: this.tokenId,
+			nonce: this.nonce,
 			signature: {
 				v: this.signature.v,
 				r: this.signature.r,
 				s: this.signature.s
 			}
 		}
+	}
+
+	public hash(domainSeparator: string): string {
+		const encoder = new AbiCoder();
+		const data = keccak256(
+			encoder.encode(
+				["bytes32","address","uint256","uint256","uint256"],
+				[
+					keccak256(toUtf8Bytes("Listing(address nftContract,uint256 tokenId,uint256 minPriceCents,uint256 nonce)")),
+                    this.nftContract,
+                    this.tokenId,
+                    this.minPriceCents,
+                    this.nonce
+				]
+			)
+		);
+		//#TODO refactor
+		//arrayify(hash).entries
+		return keccak256("0x1901"+encoder.encode(
+			["bytes32","bytes32"],
+			[
+				domainSeparator,
+				data
+			]).split('x')[1]);
 	}
 }

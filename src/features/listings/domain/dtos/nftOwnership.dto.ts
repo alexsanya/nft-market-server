@@ -1,5 +1,6 @@
 import { ADDRESS_REGEX, AppError, ValidationType, ZERO } from "../../../../core";
 import { CoreDto } from "../../../shared";
+import { isDefinedAndValidNumber } from "../../infrastructure";
 
 export class NftOwnershipDto implements CoreDto<NftOwnershipDto> {
 	private constructor(
@@ -24,7 +25,7 @@ export class NftOwnershipDto implements CoreDto<NftOwnershipDto> {
 		if (!chainId) {
 			errors.push({ fields: ['chainId'], constraint: 'chainId is required' });
 		}
-		if (!tokenId) {
+		if (!isDefinedAndValidNumber(tokenId)) {
 			errors.push({ fields: ['tokenId'], constraint: 'tokenId is required' });
 		}
 

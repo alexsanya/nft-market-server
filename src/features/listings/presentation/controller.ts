@@ -20,6 +20,7 @@ interface Params {
 interface RequestBody {
     owner: string;
     chainId: number;
+    nonce: number;
     minPriceCents: number;
     nftContract: string;
     tokenId: number;
@@ -59,8 +60,8 @@ export class ListingsController {
 		res: Response<SuccessResponse<ListingEntity>>,
 		next: NextFunction
 	): void => {
-		const { owner, chainId, minPriceCents, nftContract, tokenId, signature } = req.body;
-		const createDto = CreateListingDto.create({ owner, chainId, minPriceCents, nftContract, tokenId, signature });
+		const { owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature } = req.body;
+		const createDto = CreateListingDto.create({ owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature });
 		new CreateListing(this.repository, this.onChainDataSource, this.evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))

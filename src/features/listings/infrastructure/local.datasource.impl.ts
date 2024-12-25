@@ -13,6 +13,7 @@ const LISTING_MOCK: Array<Record<string, unknown>> = [
 		minPriceCents: "150000",
 		nftContract: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
 		tokenId: 72997,
+		nonce: 0,
 		signature: {
 			v: 5,
 			r: "0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712",
@@ -25,6 +26,7 @@ const LISTING_MOCK: Array<Record<string, unknown>> = [
 		minPriceCents: "150000",
 		nftContract: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
 		tokenId: 72997,
+		nonce: 0,
 		signature: {
 			v: 5,
 			r: "0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712",

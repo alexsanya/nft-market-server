@@ -10,6 +10,7 @@ export const TEN = 10 as const;
 
 export const ADDRESS_REGEX = new RegExp(/^(0x)?[0-9a-fA-F]{40}$/);
 export const BYTES32_REGEX = new RegExp(/^(0x)?[0-9a-fA-F]{64}$/);
+export const DOMAIN_SEPARATOR = "0x89925f986235c2ea159d50a9fbe8b3c1715810e2df869dc3ea1aed1320f876c6";
 
 export enum HttpCode {
 	OK = 200,
