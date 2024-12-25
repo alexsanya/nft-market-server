@@ -1,16 +1,17 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, HttpCode, ONE, TEN } from '../../../core';
+import { type SuccessResponse, Signature, HttpCode, ONE, TEN } from '../../../core';
 import { PaginationDto, type PaginationResponseEntity } from '../../shared';
 
 import {
     CreateListingDto,
     GetListings,
+    CreateListing,
 	type ListingEntity,
-	type ListingRepository
+	type ListingRepository,
+    OnChainDataSource
 } from '../domain';
-import { Signature } from 'ethers';
-import { CreateListing } from '../domain/usecases/create.usecase';
+import { EvmUtils } from '../infrastructure';
 
 interface Params {
 	id: string;
@@ -32,7 +33,11 @@ interface RequestQuery {
 
 export class ListingsController {
 	//* Dependency injection
-	constructor(private readonly repository: ListingRepository) {}
+	constructor(
+        private readonly repository: ListingRepository,
+        private readonly onChainDataSource: OnChainDataSource,
+        private readonly evmUtils: EvmUtils
+    ) {}
 
 	public getAll = (
 		req: Request<unknown, unknown, unknown, RequestQuery>,
@@ -56,7 +61,7 @@ export class ListingsController {
 	): void => {
 		const { owner, chainId, minPriceCents, nftContract, tokenId, signature } = req.body;
 		const createDto = CreateListingDto.create({ owner, chainId, minPriceCents, nftContract, tokenId, signature });
-		new CreateListing(this.repository)
+		new CreateListing(this.repository, this.onChainDataSource, this.evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
 			.catch(next);
