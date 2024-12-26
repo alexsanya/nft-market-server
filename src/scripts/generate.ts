@@ -14,10 +14,10 @@ async function generateListing() {
     const signer = new Wallet(OWNER_PRIVATE_KEY);
     const createListingDto = CreateListingDto.create({
         owner: signer.address,
-        chainId: "11155111",
+        chainId: 137,
         minPriceCents: 150000,
-        nftContract: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
-        tokenId: 72997,
+        nftContract: "0x251be3a17af4892035c37ebf5890f4a4d889dcad",
+        tokenId: 108505515170052514308027011782423337813417608379034307815112798701969858676431,
         nonce: 0,
         signature: {
             v: 5,

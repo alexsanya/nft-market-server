@@ -1,6 +1,6 @@
 import { Router } from 'express';
 
-import { ListingDatasourceImpl, LisitingRepositoryImpl, ChainDataProviderImpl, OnChainDataSourceImpl } from '../infrastructure';
+import { ListingDatasourceImpl, LisitingRepositoryImpl } from '../infrastructure';
 import { ListingsController } from './controller';
 import { EvmUtilsImpl } from '../infrastructure';
 
@@ -11,10 +11,8 @@ export class ListingsRoutes {
 		//* This datasource can be change
 		const datasource = new ListingDatasourceImpl();
 		const repository = new LisitingRepositoryImpl(datasource);
-        const chainDataProvider = new ChainDataProviderImpl();
-        const onChainDataSource = new OnChainDataSourceImpl(chainDataProvider);
         const evmUtils = new EvmUtilsImpl();
-		const controller = new ListingsController(repository, onChainDataSource, evmUtils);
+		const controller = new ListingsController(repository, evmUtils);
 
 		router.get('/', controller.getAll);
         router.post('/', controller.create);

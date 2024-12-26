@@ -1,11 +1,13 @@
+import { Contract, providers } from "ethers";
 import { NftOwnershipDto, OnChainDataSource } from "../domain";
-import { ChainDataProvider } from "../domain/datasources/chainDataProvider";
+import { ERC721_ABI } from "../../../core";
 
 export class OnChainDataSourceImpl implements OnChainDataSource {
-    constructor(private readonly chainDataProvider: ChainDataProvider) {}
+    constructor(private readonly chainDataProvider: providers.Provider) {}
 
-    public isNftBelongsToOwner(nftOwnershipDto: NftOwnershipDto): Promise<boolean> {
-        //#TODO implement
-        return Promise.resolve(true);
+    public async isNftBelongsToOwner(nftOwnershipDto: NftOwnershipDto): Promise<boolean> {
+        const nftContractInstance = new Contract(nftOwnershipDto.nftContract, ERC721_ABI, this.chainDataProvider);
+        const realOwner = await nftContractInstance.ownerOf(nftOwnershipDto.tokenId);
+        return realOwner == nftOwnershipDto.owner;
     }
 }

@@ -62,8 +62,8 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 			chainId as number,
 			minPriceCents as number,
 			nftContract as string,
-			tokenId as number,
-			nonce as number,
+			tokenId as number, //#TODO use BigInt
+			nonce as number, //#TODO useBigInt
 			signatureDto as SignatureDto
 		);
 	}
