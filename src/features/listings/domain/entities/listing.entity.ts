@@ -15,6 +15,9 @@ export class ListingEntity {
 
 	public static fromJson(obj: Record<string, unknown>): ListingEntity {
 		const { owner, chainId, minPriceCents, nftContract, tokenId, signature, nonce } = obj;
+		if (!signature) {
+			throw AppError.badRequest('This entity requires signature', [{ constraint: 'signature is required', fields: ['signature'] }]);
+		}
         const { v, r, s } = signature as Record<string, unknown>;
 		if (!owner || (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
 			throw AppError.badRequest('This entity requires a owner', [{ constraint: 'owner is required and must be an address', fields: ['owner'] }]);
