@@ -32,6 +32,10 @@ interface RequestQuery {
 	limit: string;
 }
 
+(BigInt.prototype as any).toJSON = function () {
+    return this.toString();
+};
+
 export class ListingsController {
 	//* Dependency injection
 	constructor(

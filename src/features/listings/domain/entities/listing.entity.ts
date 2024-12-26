@@ -1,16 +1,15 @@
 // src\features\todos\domain\entities\todo.entity.ts
 
 import { AppError, ZERO, ADDRESS_REGEX, Signature, BYTES32_REGEX } from '../../../../core';
-import { isDefinedAndValidNumber } from '../../infrastructure';
 
 export class ListingEntity {
 	constructor(
         public owner: string,
-        public chainId: number,
+        public chainId: BigInt,
         public minPriceCents: number,
 		public nftContract: string,
-		public tokenId: number,
-        public nonce: number,
+		public tokenId: BigInt,
+        public nonce: BigInt,
         public signature: Signature
 	) {}
 
@@ -23,13 +22,13 @@ export class ListingEntity {
 		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
 			throw AppError.badRequest('This entity requires a nftContract', [{ constraint: 'nftContract is required and must be an address', fields: ['nftContract'] }]);
 		}
-		if (!chainId) {
+		if (typeof chainId === 'undefined') {
 			throw AppError.badRequest('This entity requires chainId', [{ constraint: 'chainId is required', fields: ['chainId'] }]);
 		}
-		if (!isDefinedAndValidNumber(nonce)) {
+		if (typeof nonce === 'undefined') {
 			throw AppError.badRequest('This entity requires nonce', [{ constraint: 'nonce is required', fields: ['nonce'] }]);
 		}
-		if (!isDefinedAndValidNumber(tokenId)) {
+		if (typeof tokenId === 'undefined') {
 			throw AppError.badRequest('This entity requires tokenId', [{ constraint: 'tokenId is required', fields: ['tokenId'] }]);
 		}
 		if (!minPriceCents) {
@@ -46,11 +45,11 @@ export class ListingEntity {
         }
 		return new ListingEntity(
             owner as string,
-            chainId as number,
+            BigInt(chainId as string),
             minPriceCents as number,
             nftContract as string,
-            tokenId as number,
-            nonce as number,
+            BigInt(tokenId as string),
+            BigInt(nonce as string),
             signature as Signature
         );
 	}

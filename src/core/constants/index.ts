@@ -16,7 +16,8 @@ export const ERC721_ABI = [
 	"function ownerOf(uint256) external view returns (address)"
 ];
 
-export const ETH_MAINNET_ID = 1;
+export const ETH_MAINNET_ID = "1";
+export const POLYGON_ID = "137";
 
 export enum HttpCode {
 	OK = 200,

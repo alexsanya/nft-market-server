@@ -2,16 +2,15 @@ import { AbiCoder, arrayify, keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 import { type ValidationType, AppError, ZERO, ADDRESS_REGEX } from '../../../../core';
 import { type CoreDto } from '../../../shared';
 import { SignatureDto } from './signature.dto';
-import { isDefinedAndValidNumber } from '../../infrastructure';
 
 export class CreateListingDto implements CoreDto<CreateListingDto> {
 	private constructor(
 		public readonly owner: string,
-		public readonly chainId: number,
+		public readonly chainId: BigInt,
 		public readonly minPriceCents: number,
 		public readonly nftContract: string,
-		public readonly tokenId: number,
-		public readonly nonce: number,
+		public readonly tokenId: BigInt,
+		public readonly nonce: BigInt,
 		public readonly signature: SignatureDto,
 	) {
 		this.validate(this);
@@ -30,10 +29,10 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		if (!chainId) {
 			errors.push({ fields: ['chainId'], constraint: 'chainId is required' });
 		}
-		if (!isDefinedAndValidNumber(nonce)) {
+		if (typeof nonce === 'undefined') {
 			errors.push({ fields: ['nonce'], constraint: 'nonce is required' });
 		}
-		if (!isDefinedAndValidNumber(tokenId)) {
+		if (typeof tokenId === 'undefined') {
 			errors.push({ fields: ['tokenId'], constraint: 'tokenId is required' });
 		}
 		if (!minPriceCents) {
@@ -59,11 +58,11 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		const signatureDto = SignatureDto.create((signature as object) as Record<string, unknown>);
 		return new CreateListingDto(
 			owner as string,
-			chainId as number,
+			BigInt(chainId as string),
 			minPriceCents as number,
 			nftContract as string,
-			tokenId as number, //#TODO use BigInt
-			nonce as number, //#TODO useBigInt
+			BigInt(tokenId as string),
+			BigInt(nonce as string),
 			signatureDto as SignatureDto
 		);
 	}
@@ -71,11 +70,11 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 	public toJson(): Record<string, unknown> {
 		return {
 			owner: this.owner,
-			chainId: this.chainId,
+			chainId: this.chainId.toString(),
 			minPriceCents: this.minPriceCents,
 			nftContract: this.nftContract,
-			tokenId: this.tokenId,
-			nonce: this.nonce,
+			tokenId: this.tokenId.toString(),
+			nonce: this.nonce.toString(),
 			signature: {
 				v: this.signature.v,
 				r: this.signature.r,
