@@ -11,7 +11,7 @@ import {
 	type ListingRepository
 } from '../domain';
 import { EvmUtils, OnChainDataSourceImpl } from '../../shared';
-import { providers } from 'ethers';
+import { JsonRpcProvider } from 'ethers';
 
 export interface RequestBody {
     owner: string;
@@ -61,7 +61,7 @@ export class ListingsController {
 	): void => {
 		const { owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature } = req.body;
 		const createDto = CreateListingDto.create({ owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature });
-        const onChainDataSource = new OnChainDataSourceImpl(new providers.JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[chainId]));
+        const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[chainId]));
 		new CreateListing(this.repository, onChainDataSource, this.evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))

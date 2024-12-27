@@ -1,4 +1,4 @@
-import { AbiCoder, keccak256, toUtf8Bytes } from 'ethers/lib/utils';
+import { AbiCoder, keccak256, toUtf8Bytes } from "ethers";
 import { type ValidationType, AppError, ZERO } from '../../../../core';
 import { isAddress, SignatureDto, type CoreDto } from '../../../shared';
 import { CreateListingDto } from '../../../listings';

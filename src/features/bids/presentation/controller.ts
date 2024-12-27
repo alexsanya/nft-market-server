@@ -11,7 +11,7 @@ import {
 	type BidEntity,
 	type BidRepository
 } from '../domain';
-import { providers } from 'ethers';
+import { JsonRpcProvider } from 'ethers';
 
 interface RequestQuery {
 	page: string;
@@ -56,7 +56,7 @@ export class BidsController {
 	): void => {
 		const { bidder, listing, tokenAddress, validUntil, value, signature } = req.body;
 		const createDto = CreateBidDto.create({ bidder, listing, tokenAddress, validUntil, value, signature });
-        const onChainDataSource = new OnChainDataSourceImpl(new providers.JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[listing.chainId]));
+        const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[listing.chainId]));
 		new CreateBid(this.repository, onChainDataSource, this.evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))

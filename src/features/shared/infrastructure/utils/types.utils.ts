@@ -19,3 +19,12 @@ export function isAddress(data: unknown): boolean {
 export function isBytes32(data: unknown): boolean {
     return (data as string).length !== ZERO && BYTES32_REGEX.test(data as string);
 }
+
+export function arrayify(data: string): Uint8Array {
+    const bytes = [];
+    const hexString = data.split('x')[1];
+    for (let i = 0; i < hexString.length; i += 2) {
+      bytes.push(parseInt(hexString.slice(i, i + 2), 16));
+    }
+    return new Uint8Array(bytes);
+}

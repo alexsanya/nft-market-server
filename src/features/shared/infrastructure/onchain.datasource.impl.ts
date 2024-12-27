@@ -1,10 +1,10 @@
-import { Contract, providers } from "ethers";
+import { Contract, type Provider } from "ethers";
 import { NftOwnershipDto } from "../../listings";
 import { ERC20_ABI, ERC721_ABI } from "../../../core";
 import { OnChainDataSource } from "../domain";
 
 export class OnChainDataSourceImpl implements OnChainDataSource {
-    constructor(private readonly chainDataProvider: providers.Provider) {}
+    constructor(private readonly chainDataProvider: Provider) {}
 
     public async isNftBelongsToOwner(nftOwnershipDto: NftOwnershipDto): Promise<boolean> {
         const nftContractInstance = new Contract(nftOwnershipDto.nftContract, ERC721_ABI, this.chainDataProvider);

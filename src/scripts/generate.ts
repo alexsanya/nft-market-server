@@ -1,10 +1,9 @@
 // generate wallet and signed listing
-import { pick } from "lodash";
 import { Wallet } from "ethers";
-import { arrayify, splitSignature } from "ethers/lib/utils";
 import { CreateListingDto } from "../features";
 import { CreateBidDto } from "../features/bids";
-
+import { EvmUtilsImpl } from "../features/shared/infrastructure/utils/evm.utils.impl"
+import { arrayify } from "../features/shared";
 
 console.log('Generate wallet and signed listing');
 
@@ -32,7 +31,7 @@ async function generateListing(): Promise<CreateListingDto> {
 
     return CreateListingDto.create({
         ...createListingDto,
-        signature: pick(splitSignature(signature), ['r','v','s'])
+        signature: EvmUtilsImpl.splitSignature(signature)
     });
 }
 
@@ -51,7 +50,7 @@ async function generateBid() {
 
     const bid = CreateBidDto.create({
         ...createBidDto,
-        signature: pick(splitSignature(signature), ['r','v','s'])
+        signature: EvmUtilsImpl.splitSignature(signature)
     });
 
     console.log('Listing:', listing);
@@ -66,7 +65,7 @@ async function generateSettlement() {
 
     console.log('Settlement: ', {
         bid,
-        signature: pick(splitSignature(signature), ['r','v','s'])
+        signature: EvmUtilsImpl.splitSignature(signature)
     });
 }
 

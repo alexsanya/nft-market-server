@@ -12,7 +12,7 @@ import {
 	type SettlementRepository
 } from '../domain';
 import { EvmUtils } from '../../shared';
-import { providers } from 'ethers';
+import { JsonRpcProvider } from 'ethers';
 
 interface RequestQuery {
 	page: string;
@@ -58,7 +58,7 @@ export class SettlementController {
 	): void => {
 		const { bid, signature } = req.body;
 		const createDto = CreateSettlementDto.create({ bid, signature });
-        const onChainDataSource = new OnChainDataSourceImpl(new providers.JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId]));
+        const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId]));
 		new CreateSettlement(this.repository, onChainDataSource, this.evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
