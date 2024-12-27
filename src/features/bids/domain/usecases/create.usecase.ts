@@ -34,17 +34,23 @@ export class CreateBid implements CreateBidUseCase {
             nonce,
             owner
         });
-        const isNftBelongsToOwner = await this.onChainDataSource.isNftBelongsToOwner(nftDto);
+        const [isNftBelongsToOwner, isBidderPosessEnoughTokens ] = await Promise.all([
+            this.onChainDataSource.isNftBelongsToOwner(nftDto),
+            this.onChainDataSource.isAddressPosessSufficientTokens(data.bidder, data.tokenAddress, data.value)
+        ]);
+        // make sure NFT belongs to owner
         if (!isNftBelongsToOwner) {
 			errors.push({ fields: [], constraint: 'Owner doesn\'t posess listed NFT' });
         }
         // make sure bidder has enough tokens
-        const isBidderPosessEnoughTokens = await this.onChainDataSource.isAddressPosessSufficientTokens(data.bidder, data.tokenAddress, data.value);
         if (!isBidderPosessEnoughTokens) {
 			errors.push({ fields: [], constraint: 'Bidder doesn\'t posess sufficient tokens' });
         }
         
-		if (errors.length > ZERO) throw AppError.badRequest('Error validating bid', errors);
+		if (errors.length > ZERO) {
+            console.error(errors);
+            throw AppError.badRequest('Error validating bid', errors);
+        }
 		return await this.repository.create(data);
 	}
 }
