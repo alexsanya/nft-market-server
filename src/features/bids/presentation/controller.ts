@@ -1,23 +1,36 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, ONE, TEN } from '../../../core';
-import { PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type SuccessResponse, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
+import { EvmUtils, OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { RequestBody as ListingRequestBody } from '../../listings/presentation/controller';
 
 import {
     GetBids,
+    CreateBidDto,
 	type BidEntity,
 	type BidRepository
 } from '../domain';
+import { providers } from 'ethers';
 
 interface RequestQuery {
 	page: string;
 	limit: string;
 }
 
+interface RequestBody {
+    bidder: string;
+    listing: ListingRequestBody;
+    tokenAddress: string;
+    validUntil: BigInt;
+    value: BigInt;
+    signature: Signature;
+}
+
 export class BidsController {
 	//* Dependency injection
 	constructor(
-        private readonly repository: BidRepository
+        private readonly repository: BidRepository,
+        private readonly evmUtils: EvmUtils
     ) {}
 
 	public getAll = (
@@ -33,6 +46,20 @@ export class BidsController {
 			.catch((error) => {
 				next(error);
 			});
+	};
+
+    public create = (
+		req: Request<unknown, unknown, RequestBody>,
+		res: Response<SuccessResponse<BidEntity>>,
+		next: NextFunction
+	): void => {
+		const { bidder, listing, tokenAddress, validUntil, value, signature } = req.body;
+		const createDto = CreateBidDto.create({ bidder, listing, tokenAddress, validUntil, value, signature });
+        const onChainDataSource = new OnChainDataSourceImpl(new providers.JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[listing.chainId]));
+		new CreateBid(this.repository, onChainDataSource, this.evmUtils)
+			.execute(createDto)
+			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
+			.catch(next);
 	};
 
 }

@@ -3,7 +3,7 @@ import { OnChainDataSource } from '../datasources';
 import { CreateListingDto, NftOwnershipDto } from '../dtos';
 import { type ListingEntity } from '../entities';
 import { type ListingRepository } from '../repositories/repository';
-import { type EvmUtils } from '../../infrastructure';
+import { type EvmUtils } from '../../../shared';
 
 export interface CreateListingUseCase {
 	execute: (data: CreateListingDto) => Promise<ListingEntity>;

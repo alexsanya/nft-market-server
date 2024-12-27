@@ -2,7 +2,7 @@ import { Router } from 'express';
 
 import { ListingDatasourceImpl, LisitingRepositoryImpl } from '../infrastructure';
 import { ListingsController } from './controller';
-import { EvmUtilsImpl } from '../infrastructure';
+import { EvmUtilsImpl } from '../../shared';
 
 export class ListingsRoutes {
 	static get routes(): Router {

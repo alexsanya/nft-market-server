@@ -1,5 +1,5 @@
 import { type ValidationType, AppError, ZERO, BYTES32_REGEX } from '../../../../core';
-import { type CoreDto } from '../../../shared';
+import { type CoreDto } from './core.dto';
 
 export class SignatureDto implements CoreDto<SignatureDto> {
 	private constructor(

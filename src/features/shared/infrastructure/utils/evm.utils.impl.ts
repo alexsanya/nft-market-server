@@ -1,5 +1,5 @@
 import { arrayify, verifyMessage } from "ethers/lib/utils";
-import { CreateListingDto } from "../../domain";
+import { CreateListingDto } from "../../../listings";
 import { EvmUtils } from "./evm.utils";
 import { Signature } from "../../../../core";
 

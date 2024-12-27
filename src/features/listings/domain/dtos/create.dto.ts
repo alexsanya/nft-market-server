@@ -1,7 +1,6 @@
-import { AbiCoder, arrayify, keccak256, toUtf8Bytes } from 'ethers/lib/utils';
+import { AbiCoder, keccak256, toUtf8Bytes } from 'ethers/lib/utils';
 import { type ValidationType, AppError, ZERO, ADDRESS_REGEX } from '../../../../core';
-import { type CoreDto } from '../../../shared';
-import { SignatureDto } from './signature.dto';
+import { SignatureDto, type CoreDto } from '../../../shared';
 
 export class CreateListingDto implements CoreDto<CreateListingDto> {
 	private constructor(
@@ -26,7 +25,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
 			errors.push({ fields: ['nftContract'], constraint: 'nftContract is required and must be an address' });
 		}
-		if (!chainId) {
+		if (typeof chainId === 'undefined') {
 			errors.push({ fields: ['chainId'], constraint: 'chainId is required' });
 		}
 		if (typeof nonce === 'undefined') {

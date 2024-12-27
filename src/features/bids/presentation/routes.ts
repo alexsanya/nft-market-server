@@ -13,6 +13,7 @@ export class BidsRoutes {
 		const controller = new BidsController(repository);
 
 		router.get('/', controller.getAll);
+		router.post('/', controller.create);
 
 		return router;
 	}

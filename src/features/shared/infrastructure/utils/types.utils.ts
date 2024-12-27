@@ -1,3 +1,5 @@
+import { ADDRESS_REGEX, ZERO } from "../../../../core";
+
 export function canConvertToStringToBigInt(str: string) {
     try {
         const result = BigInt(str);
@@ -8,4 +10,8 @@ export function canConvertToStringToBigInt(str: string) {
         }
         throw error;
     }
+}
+
+export function isAddress(data: unknown) {
+    return (data ||  (data as string).length !== ZERO && ADDRESS_REGEX.test(data as string));
 }

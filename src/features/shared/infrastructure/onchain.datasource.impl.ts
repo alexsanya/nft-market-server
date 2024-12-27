@@ -1,5 +1,5 @@
 import { Contract, providers } from "ethers";
-import { NftOwnershipDto, OnChainDataSource } from "../domain";
+import { NftOwnershipDto, OnChainDataSource } from "../../listings";
 import { ERC721_ABI } from "../../../core";
 
 export class OnChainDataSourceImpl implements OnChainDataSource {

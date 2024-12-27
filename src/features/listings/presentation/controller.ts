@@ -10,20 +10,16 @@ import {
 	type ListingEntity,
 	type ListingRepository
 } from '../domain';
-import { EvmUtils, OnChainDataSourceImpl } from '../infrastructure';
+import { EvmUtils, OnChainDataSourceImpl } from '../../shared';
 import { providers } from 'ethers';
 
-interface Params {
-	id: string;
-}
-
-interface RequestBody {
+export interface RequestBody {
     owner: string;
-    chainId: number;
-    nonce: number;
+    chainId: string;
+    nonce: string;
     minPriceCents: number;
     nftContract: string;
-    tokenId: number;
+    tokenId: string;
     signature: Signature;
 }
 
