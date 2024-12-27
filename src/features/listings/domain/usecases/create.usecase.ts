@@ -22,12 +22,13 @@ export class CreateListing implements CreateListingUseCase {
 			errors.push({ fields: ['signature'], constraint: 'Signature is invalid' });
         }
         // make sure owner posess listed NFT
+        const { chainId, nftContract, tokenId, nonce, owner } = data;
         const nftDto = NftOwnershipDto.create({
-            chainId: data.chainId,
-            nftContract: data.nftContract,
-            tokenId: data.tokenId,
-            nonce: data.nonce,
-            owner: data.owner
+            chainId,
+            nftContract,
+            tokenId,
+            nonce,
+            owner
         });
         const isNftBelongsToOwner = await this.onChainDataSource.isNftBelongsToOwner(nftDto);
         if (!isNftBelongsToOwner) {

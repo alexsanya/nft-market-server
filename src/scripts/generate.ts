@@ -16,11 +16,11 @@ const MOCK_SIGNATURE = {
     r: "0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712",
     s: "0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712"
 };
+const owner = new Wallet(OWNER_PRIVATE_KEY);
 
 async function generateListing(): Promise<CreateListingDto> {
-    const signer = new Wallet(OWNER_PRIVATE_KEY);
     const createListingDto = CreateListingDto.create({
-        owner: signer.address,
+        owner: owner.address,
         chainId: 137,
         minPriceCents: 150000,
         nftContract: "0x251be3a17af4892035c37ebf5890f4a4d889dcad",
@@ -28,7 +28,7 @@ async function generateListing(): Promise<CreateListingDto> {
         nonce: 0,
         signature: MOCK_SIGNATURE
     });
-    const signature = await signer.signMessage(arrayify(createListingDto.hash(DOMAIN_SEPARATOR)));
+    const signature = await owner.signMessage(arrayify(createListingDto.hash(DOMAIN_SEPARATOR)));
 
     return CreateListingDto.create({
         ...createListingDto,
@@ -56,6 +56,18 @@ async function generateBid() {
 
     console.log('Listing:', listing);
     console.log('Bid:', bid);
+
+    return bid;
 }
 
-generateBid();
+async function generateSettlement() {
+    const bid = await generateBid();
+    const signature = await owner.signMessage(arrayify(bid.hash(DOMAIN_SEPARATOR)));
+
+    console.log('Settlement: ', {
+        bid,
+        signature: pick(splitSignature(signature), ['r','v','s'])
+    });
+}
+
+generateSettlement();

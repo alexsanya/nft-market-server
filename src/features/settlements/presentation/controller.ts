@@ -1,18 +1,27 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, ONE, TEN } from '../../../core';
-import { PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type SuccessResponse, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
+import { OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { RequestBody as BidRequestBody } from '../../bids/presentation/controller';
 
 import {
     GetSettlements,
+    CreateSettlement,
+    CreateSettlementDto,
 	type SettlementEntity,
 	type SettlementRepository
 } from '../domain';
 import { EvmUtils } from '../../shared';
+import { providers } from 'ethers';
 
 interface RequestQuery {
 	page: string;
 	limit: string;
+}
+
+interface RequestBody {
+    bid: BidRequestBody;
+    signature: Signature;
 }
 
 (BigInt.prototype as any).toJSON = function () {
@@ -39,5 +48,20 @@ export class SettlementController {
 			.catch((error) => {
 				next(error);
 			});
+	};
+
+
+    public create = (
+		req: Request<unknown, unknown, RequestBody>,
+		res: Response<SuccessResponse<SettlementEntity>>,
+		next: NextFunction
+	): void => {
+		const { bid, signature } = req.body;
+		const createDto = CreateSettlementDto.create({ bid, signature });
+        const onChainDataSource = new OnChainDataSourceImpl(new providers.JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId]));
+		new CreateSettlement(this.repository, onChainDataSource, this.evmUtils)
+			.execute(createDto)
+			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
+			.catch(next);
 	};
 }

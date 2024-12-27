@@ -15,6 +15,7 @@ export class SettlementRoutes {
 		const controller = new SettlementController(repository, evmUtils);
 
 		router.get('/', controller.getAll);
+		router.post('/', controller.create);
 
 		return router;
 	}

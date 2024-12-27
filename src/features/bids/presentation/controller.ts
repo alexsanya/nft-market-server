@@ -18,7 +18,7 @@ interface RequestQuery {
 	limit: string;
 }
 
-interface RequestBody {
+export interface RequestBody {
     bidder: string;
     listing: ListingRequestBody;
     tokenAddress: string;

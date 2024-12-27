@@ -1,11 +1,12 @@
 import { ONE } from '../../../core';
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 import {
+    CreateSettlementDto,
 	SettlementEntity,
 	type SettlementDatasource
 } from '../domain';
 
-const SETTLEMENT_MOCK: Array<Record<string, unknown>> = [
+const SETTLEMENT_MOCKS: Array<Record<string, unknown>> = [
 	{
         bid: {
             bidder: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
@@ -74,8 +75,8 @@ export class SettlementDatasourceImpl implements SettlementDatasource {
 	public async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<SettlementEntity[]>> {
 		const { page, limit } = pagination;
 
-		const todos = SETTLEMENT_MOCK;
-		const total = SETTLEMENT_MOCK.length;
+		const todos = SETTLEMENT_MOCKS;
+		const total = SETTLEMENT_MOCKS.length;
 
 		const totalPages = Math.ceil(total / limit);
 		const nextPage = page < totalPages ? page + ONE : null;
@@ -90,4 +91,11 @@ export class SettlementDatasourceImpl implements SettlementDatasource {
 			totalPages
 		};
 	}
+
+    public create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
+		const json = createDto.toJson();
+		const newSettlement = SettlementEntity.fromJson(json);
+		SETTLEMENT_MOCKS.push(json);
+		return Promise.resolve(newSettlement);
+    }
 }

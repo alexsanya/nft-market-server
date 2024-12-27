@@ -4,6 +4,7 @@ import {
 	type SettlementDatasource,
     type SettlementRepository,
     type SettlementEntity,
+    CreateSettlementDto,
 } from '../domain';
 
 export class SettlementRepositoryImpl implements SettlementRepository {
@@ -12,5 +13,9 @@ export class SettlementRepositoryImpl implements SettlementRepository {
 	async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<SettlementEntity[]>> {
 		return await this.datasource.getAll(pagination);
 	}
+
+    async create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
+        return await this.datasource.create(createDto);
+    }
 
 }

@@ -31,7 +31,7 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 		if (typeof validUntil === 'undefined') {
 			errors.push({ fields: ['validUntil'], constraint: 'validUntil is required' });
 		}
-		if (typeof signature === 'undefined') {
+		if (!signature) {
 			errors.push({ fields: ['signature'], constraint: 'signature is required' });
 		}
 

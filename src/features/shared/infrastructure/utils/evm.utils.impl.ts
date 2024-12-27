@@ -3,6 +3,7 @@ import { CreateListingDto } from "../../../listings";
 import { EvmUtils } from "./evm.utils";
 import { Signature } from "../../../../core";
 import { CreateBidDto } from "../../../bids";
+import { CreateSettlementDto } from "../../../settlements";
 
 export class EvmUtilsImpl implements EvmUtils {
     public isListingSignatureCorrect(signedListingDto: CreateListingDto, domainSeparator: string): boolean {
@@ -13,6 +14,11 @@ export class EvmUtilsImpl implements EvmUtils {
     public isBidSignatureCorrect(signedBidDto: CreateBidDto, domainSeparator: string): boolean {
         const hash = signedBidDto.hash(domainSeparator);
         return signedBidDto.bidder === verifyMessage(arrayify(hash), signedBidDto.signature);
+    }
+
+    public isSettlementSignatureCorrect(signedSettlementDto: CreateSettlementDto, domainSeparator: string): boolean {
+        const hash = signedSettlementDto.bid.hash(domainSeparator);
+        return signedSettlementDto.bid.listing.owner === verifyMessage(arrayify(hash), signedSettlementDto.signature);
     }
 
     public splitSignature(signatureHex: string): Signature {
