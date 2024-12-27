@@ -1,6 +1,7 @@
 // src\features\todos\domain\entities\todo.entity.ts
 
 import { AppError, ZERO, ADDRESS_REGEX, Signature, BYTES32_REGEX } from '../../../../core';
+import { isAddress, isBytes32 } from '../../../shared';
 
 export class ListingEntity {
 	constructor(
@@ -19,10 +20,10 @@ export class ListingEntity {
 			throw AppError.badRequest('This entity requires signature', [{ constraint: 'signature is required', fields: ['signature'] }]);
 		}
         const { v, r, s } = signature as Record<string, unknown>;
-		if (!owner || (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
+		if (!isAddress(owner)) {
 			throw AppError.badRequest('This entity requires a owner', [{ constraint: 'owner is required and must be an address', fields: ['owner'] }]);
 		}
-		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
+		if (!isAddress(nftContract)) {
 			throw AppError.badRequest('This entity requires a nftContract', [{ constraint: 'nftContract is required and must be an address', fields: ['nftContract'] }]);
 		}
 		if (typeof chainId === 'undefined') {
@@ -40,10 +41,10 @@ export class ListingEntity {
         if (!v) {
 			throw AppError.badRequest('This entity requires signature.v', [{ constraint: 'signature.v is required', fields: ['signature.v'] }]);
         }
-        if (!r || (r as string).length === ZERO || !BYTES32_REGEX.test(r as string)) {
+        if (!isBytes32(r)) {
 			throw AppError.badRequest('This entity requires signature.r', [{ constraint: 'signature.r is required', fields: ['signature.r'] }]);
         }
-        if (!s || (s as string).length === ZERO || !BYTES32_REGEX.test(s as string)) {
+        if (!isBytes32(s)) {
 			throw AppError.badRequest('This entity requires signature.s', [{ constraint: 'signature.s is required', fields: ['signature.s'] }]);
         }
 		return new ListingEntity(

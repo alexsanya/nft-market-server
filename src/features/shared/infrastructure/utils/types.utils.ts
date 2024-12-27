@@ -1,4 +1,4 @@
-import { ADDRESS_REGEX, ZERO } from "../../../../core";
+import { ADDRESS_REGEX, BYTES32_REGEX, ZERO } from "../../../../core";
 
 export function canConvertToStringToBigInt(str: string) {
     try {
@@ -12,6 +12,10 @@ export function canConvertToStringToBigInt(str: string) {
     }
 }
 
-export function isAddress(data: unknown) {
-    return (data ||  (data as string).length !== ZERO && ADDRESS_REGEX.test(data as string));
+export function isAddress(data: unknown): boolean {
+    return (data as string).length !== ZERO && ADDRESS_REGEX.test(data as string);
+}
+
+export function isBytes32(data: unknown): boolean {
+    return (data as string).length !== ZERO && BYTES32_REGEX.test(data as string);
 }

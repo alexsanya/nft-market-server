@@ -69,7 +69,7 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 	public toJson(): Record<string, unknown> {
 		return {
             bidder: this.bidder,
-            lisiting: this.listing.toJson(),
+            listing: this.listing.toJson(),
             tokenAddress: this.tokenAddress.toString(),
             validUntil: this.validUntil.toString(),
             value: this.value.toString(),

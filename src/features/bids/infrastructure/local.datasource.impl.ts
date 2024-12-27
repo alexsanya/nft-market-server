@@ -10,11 +10,9 @@ import {
 const BID_MOCK: Array<Record<string, unknown>> = [
 	{
         bidder: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
-        bid: {
             tokenAddress: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
             validUntil: "1735255023397",
-            value: "100500"
-        },
+            value: "100500",
         listing: {
             owner: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
             chainId: "11155111",
@@ -36,11 +34,9 @@ const BID_MOCK: Array<Record<string, unknown>> = [
 	},
 	{
         bidder: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
-        bid: {
             tokenAddress: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
             validUntil: "1735255023397",
-            value: "100500"
-        },
+            value: "100500",
         listing: {
             owner: "0x07152bfde079b5319e5308c43fb1dbc9c76cb4f9",
             chainId: "11155111",

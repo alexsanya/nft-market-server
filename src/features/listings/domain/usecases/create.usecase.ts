@@ -34,7 +34,10 @@ export class CreateListing implements CreateListingUseCase {
 			errors.push({ fields: [], constraint: 'Owner doesn\'t posess listed NFT' });
         }
         
-		if (errors.length > ZERO) throw AppError.badRequest('Error validating listing', errors);
+		if (errors.length > ZERO) {
+            console.error(errors);
+            throw AppError.badRequest('Error validating listing', errors);
+        }
 		return await this.repository.create(data);
 	}
 }
