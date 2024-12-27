@@ -37,9 +37,19 @@ export class CreateSettlement implements CreateSettlementUseCase {
             nonce,
             owner
         });
-        const isNftBelongsToOwner = await this.onChainDataSource.isNftBelongsToOwner(nftDto);
+        const { bidder, tokenAddress, value } = data.bid;
+
+        const [isNftBelongsToOwner, isBidderPosessEnoughTokens ] = await Promise.all([
+            this.onChainDataSource.isNftBelongsToOwner(nftDto),
+            this.onChainDataSource.isAddressPosessSufficientTokens(bidder, tokenAddress, value)
+        ]);
+        // make sure NFT belongs to owner
         if (!isNftBelongsToOwner) {
 			errors.push({ fields: [], constraint: 'Owner doesn\'t posess listed NFT' });
+        }
+        // make sure bidder has enough tokens
+        if (!isBidderPosessEnoughTokens) {
+			errors.push({ fields: [], constraint: 'Bidder doesn\'t posess sufficient tokens' });
         }
         
 		if (errors.length > ZERO) {
