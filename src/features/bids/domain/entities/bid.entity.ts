@@ -1,4 +1,4 @@
-import { ADDRESS_REGEX, AppError, BYTES32_REGEX, Signature, ZERO } from "../../../../core";
+import { AppError, Signature } from "../../../../core";
 import { ListingEntity } from "../../../listings/domain/entities/listing.entity";
 import { isAddress, isBytes32 } from "../../../shared";
 
