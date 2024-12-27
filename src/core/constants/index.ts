@@ -16,6 +16,10 @@ export const ERC721_ABI = [
 	"function ownerOf(uint256) external view returns (address)"
 ];
 
+export const ERC20_ABI = [
+	"function balanceOf(address) external view returns (uint256)"
+];
+
 export const ETH_MAINNET_ID = "1";
 export const POLYGON_ID = "137";
 

@@ -2,11 +2,17 @@ import { arrayify, verifyMessage } from "ethers/lib/utils";
 import { CreateListingDto } from "../../../listings";
 import { EvmUtils } from "./evm.utils";
 import { Signature } from "../../../../core";
+import { CreateBidDto } from "../../../bids";
 
 export class EvmUtilsImpl implements EvmUtils {
-    public isSignatureCorrect(signedListingDto: CreateListingDto, domainSeparator: string): boolean {
+    public isListingSignatureCorrect(signedListingDto: CreateListingDto, domainSeparator: string): boolean {
         const hash = signedListingDto.hash(domainSeparator);
         return signedListingDto.owner === verifyMessage(arrayify(hash), signedListingDto.signature);
+    }
+
+    public isBidSignatureCorrect(signedBidDto: CreateBidDto, domainSeparator: string): boolean {
+        const hash = signedBidDto.hash(domainSeparator);
+        return signedBidDto.bidder === verifyMessage(arrayify(hash), signedBidDto.signature);
     }
 
     public splitSignature(signatureHex: string): Signature {

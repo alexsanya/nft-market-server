@@ -6,6 +6,7 @@ import { RequestBody as ListingRequestBody } from '../../listings/presentation/c
 
 import {
     GetBids,
+    CreateBid,
     CreateBidDto,
 	type BidEntity,
 	type BidRepository

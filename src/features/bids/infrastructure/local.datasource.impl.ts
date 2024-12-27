@@ -3,6 +3,7 @@ import { ONE } from '../../../core';
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 import {
 	BidEntity,
+	CreateBidDto,
 	type BidDatasource
 } from '../domain';
 
@@ -81,4 +82,11 @@ export class BidDatasourceImpl implements BidDatasource {
 			totalPages
 		};
 	}
+
+    public create(createDto: CreateBidDto): Promise<BidEntity> {
+		const json = createDto.toJson();
+		const newBid = BidEntity.fromJson(json);
+		BID_MOCK.push(json);
+		return Promise.resolve(newBid);
+    }
 }
