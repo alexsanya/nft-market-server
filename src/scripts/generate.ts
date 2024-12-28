@@ -4,13 +4,13 @@ import { CreateListingDto } from "../features";
 import { CreateBidDto } from "../features/bids";
 import { EvmUtilsImpl } from "../features/shared/infrastructure/utils/evm.utils.impl"
 import { arrayify } from "../features/shared";
-import { EIP712_DOMAIN, LISTING_TYPES } from "./eip712data";
+import { EIP712_DOMAIN, LISTING_TYPES, BID_TYPES } from "./eip712data";
+import { DOMAIN_SEPARATORS } from "../core";
 
 console.log('Generate wallet and signed listing');
 
 const OWNER_PRIVATE_KEY = '0x0123456789012345678901234567890123456789012345678901234567890123';
 const BUYER_PRIVATE_KEY = '0x0123456789012345678901234567890123456789012345678901234567890124';
-const DOMAIN_SEPARATOR = '0x89925f986235c2ea159d50a9fbe8b3c1715810e2df869dc3ea1aed1320f876c6';
 const MOCK_SIGNATURE = {
     v: 5,
     r: "0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712",
@@ -53,7 +53,13 @@ async function generateBid() {
         value: "100500",
         signature: MOCK_SIGNATURE
     });
-    const signature = await buyer.signMessage(arrayify(createBidDto.hash(DOMAIN_SEPARATOR)));
+    const values = {
+        tokenContract: createBidDto.tokenAddress,
+        value: createBidDto.value,
+        validUntil: createBidDto.validUntil,
+        listingHash: createBidDto.listing.hash(DOMAIN_SEPARATORS[createBidDto.listing.chainId.toString()])
+    };
+    const signature = await buyer.signTypedData(EIP712_DOMAIN, BID_TYPES, values);
 
     const bid = CreateBidDto.create({
         ...createBidDto,
@@ -68,7 +74,13 @@ async function generateBid() {
 
 async function generateSettlement() {
     const bid = await generateBid();
-    const signature = await owner.signMessage(arrayify(bid.hash(DOMAIN_SEPARATOR)));
+    const values = {
+        tokenContract: bid.tokenAddress,
+        value: bid.value,
+        validUntil: bid.validUntil,
+        listingHash: bid.listing.hash(DOMAIN_SEPARATORS[bid.listing.chainId.toString()])
+    };
+    const signature = await owner.signTypedData(EIP712_DOMAIN, BID_TYPES, values);
 
     console.log('Settlement: ', {
         bid,

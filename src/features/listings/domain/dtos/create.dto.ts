@@ -97,7 +97,6 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 			)
 		);
 		//#TODO refactor
-		//arrayify(hash).entries
 		return keccak256("0x1901"+encoder.encode(
 			["bytes32","bytes32"],
 			[
