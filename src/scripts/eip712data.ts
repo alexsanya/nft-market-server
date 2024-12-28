@@ -1,8 +1,8 @@
 export const EIP712_DOMAIN = {
     name: "NFT Marketplace",
     version: "1",
-    chainId: "137",
-    verifyingContract: "0x4a9C121080f6D9250Fc0143f41B595fD172E31bf"
+    chainId: "11155111",
+    verifyingContract: "0x42d2C93839ED64b73Baa59A8ceB1C464287C8113"
 }
 export const LISTING_TYPES = {
     Listing: [

@@ -44,7 +44,7 @@ export class CreateBid implements CreateBidUseCase {
         }
         // make sure bidder has enough tokens
         if (!isBidderPosessEnoughTokens) {
-			errors.push({ fields: [], constraint: 'Bidder doesn\'t posess sufficient tokens' });
+			errors.push({ fields: [], constraint: 'Bidder doesn\'t posess sufficient amount of tokens' });
         }
         
 		if (errors.length > ZERO) {

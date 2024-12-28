@@ -14,7 +14,7 @@
 		"test:coverage": "jest --coverage",
 		"dev": "ts-node-dev --respawn --clear --transpile-only --ignore-watch node_modules ./src/app.ts",
 		"generate:settlement": "ts-node-dev ./src/scripts/generate.ts",
-		"generate:sig": "ts-node-dev ./src/scripts/sigRecovery.ts",
+		"onchain:settle": "ts-node-dev ./src/scripts/settleOnChain.ts",
 		"build": "yarn test && rimraf ./dist && tsc",
 		"start": "node dist/app.js"
 	},
@@ -38,6 +38,7 @@
 	"devDependencies": {
 		"@types/compression": "^1.7.5",
 		"@types/express": "^4.17.21",
+		"@types/ioredis": "^5.0.0",
 		"@types/jest": "^29.5.12",
 		"@types/lodash": "^4.17.13",
 		"@types/node": "^20.12.2",
@@ -66,6 +67,8 @@
 		"ethers": "^6.13.4",
 		"express": "^4.19.2",
 		"express-rate-limit": "^7.2.0",
-		"lodash": "^4.17.21"
+		"ioredis": "^5.4.2",
+		"lodash": "^4.17.21",
+		"redis": "^4.7.0"
 	}
 }

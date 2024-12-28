@@ -1,4 +1,4 @@
-import { hashMessage, recoverAddress } from "ethers";
+import { recoverAddress } from "ethers";
 import { CreateListingDto } from "../../../listings";
 import { EvmUtils } from "./evm.utils";
 import { Signature } from "../../../../core";

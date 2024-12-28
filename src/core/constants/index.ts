@@ -14,11 +14,14 @@ export const BYTES32_REGEX = new RegExp(/^(0x)?[0-9a-fA-F]{64}$/);
 
 export const ETH_MAINNET_ID = "1";
 export const POLYGON_ID = "137";
+export const SEPOLIA_ID = "11155111";
 
 export const DOMAIN_SEPARATOR_POLYGON = "0x18fe943f718ca9eea10beb465fad697a409bfdab62830c6218e6333db82a854b";
+export const DOMAIN_SEPARATOR_SEPOLIA = "0xc011709dbbb9deb3fc6044957fcef85f12c9b999edaa5c6c26250edf4788ecda";
 
 export const DOMAIN_SEPARATORS = {
-	[POLYGON_ID]: DOMAIN_SEPARATOR_POLYGON
+	[POLYGON_ID]: DOMAIN_SEPARATOR_POLYGON,
+	[SEPOLIA_ID]: DOMAIN_SEPARATOR_SEPOLIA
 } as Record<string, string>;
 
 export const EIP712_LISTING_TYPES = {
