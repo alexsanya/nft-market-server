@@ -4,6 +4,7 @@ import { CreateListingDto } from "../features";
 import { CreateBidDto } from "../features/bids";
 import { EvmUtilsImpl } from "../features/shared/infrastructure/utils/evm.utils.impl"
 import { arrayify } from "../features/shared";
+import { EIP712_DOMAIN, LISTING_TYPES } from "./eip712data";
 
 console.log('Generate wallet and signed listing');
 
@@ -27,7 +28,13 @@ async function generateListing(): Promise<CreateListingDto> {
         nonce: 0,
         signature: MOCK_SIGNATURE
     });
-    const signature = await owner.signMessage(arrayify(createListingDto.hash(DOMAIN_SEPARATOR)));
+    const values = {
+        nftContract: createListingDto.nftContract,
+        tokenId: createListingDto.tokenId,
+        minPriceCents: createListingDto.minPriceCents,
+        nonce: createListingDto.nonce
+    }
+    const signature = await owner.signTypedData(EIP712_DOMAIN, LISTING_TYPES, values);
 
     return CreateListingDto.create({
         ...createListingDto,
@@ -68,5 +75,6 @@ async function generateSettlement() {
         signature: EvmUtilsImpl.splitSignature(signature)
     });
 }
+
 
 generateSettlement();

@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
-import { OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
+import { EvmUtilsImpl, OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
 import { RequestBody as BidRequestBody } from '../../bids/presentation/controller';
 
 import {
@@ -11,7 +11,6 @@ import {
 	type SettlementEntity,
 	type SettlementRepository
 } from '../domain';
-import { EvmUtils } from '../../shared';
 import { JsonRpcProvider } from 'ethers';
 
 interface RequestQuery {
@@ -31,8 +30,7 @@ interface RequestBody {
 export class SettlementController {
 	//* Dependency injection
 	constructor(
-        private readonly repository: SettlementRepository,
-        private readonly evmUtils: EvmUtils
+        private readonly repository: SettlementRepository
     ) {}
 
 	public getAll = (
@@ -59,7 +57,8 @@ export class SettlementController {
 		const { bid, signature } = req.body;
 		const createDto = CreateSettlementDto.create({ bid, signature });
         const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId]));
-		new CreateSettlement(this.repository, onChainDataSource, this.evmUtils)
+        const evmUtils = new EvmUtilsImpl(DOMAIN_SEPARATORS[bid.listing.chainId]);
+		new CreateSettlement(this.repository, onChainDataSource, evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
 			.catch(next);

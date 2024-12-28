@@ -1,7 +1,7 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, Signature, HttpCode, ONE, TEN, envs } from '../../../core';
-import { PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type SuccessResponse, Signature, HttpCode, ONE, TEN, envs, DOMAIN_SEPARATORS } from '../../../core';
+import { EvmUtilsImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
 
 import {
     CreateListingDto,
@@ -10,7 +10,7 @@ import {
 	type ListingEntity,
 	type ListingRepository
 } from '../domain';
-import { EvmUtils, OnChainDataSourceImpl } from '../../shared';
+import { OnChainDataSourceImpl } from '../../shared';
 import { JsonRpcProvider } from 'ethers';
 
 export interface RequestBody {
@@ -35,8 +35,7 @@ interface RequestQuery {
 export class ListingsController {
 	//* Dependency injection
 	constructor(
-        private readonly repository: ListingRepository,
-        private readonly evmUtils: EvmUtils
+        private readonly repository: ListingRepository
     ) {}
 
 	public getAll = (
@@ -62,7 +61,8 @@ export class ListingsController {
 		const { owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature } = req.body;
 		const createDto = CreateListingDto.create({ owner, chainId, nonce, minPriceCents, nftContract, tokenId, signature });
         const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[chainId]));
-		new CreateListing(this.repository, onChainDataSource, this.evmUtils)
+        const evmUtils = new EvmUtilsImpl(DOMAIN_SEPARATORS[chainId]);
+		new CreateListing(this.repository, onChainDataSource, evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
 			.catch(next);

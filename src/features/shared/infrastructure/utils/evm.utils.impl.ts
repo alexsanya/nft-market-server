@@ -1,4 +1,4 @@
-import { verifyMessage } from "ethers";
+import { hashMessage, recoverAddress } from "ethers";
 import { CreateListingDto } from "../../../listings";
 import { EvmUtils } from "./evm.utils";
 import { Signature } from "../../../../core";
@@ -7,19 +7,21 @@ import { CreateSettlementDto } from "../../../settlements";
 import { arrayify } from "./types.utils";
 
 export class EvmUtilsImpl implements EvmUtils {
-    public isListingSignatureCorrect(signedListingDto: CreateListingDto, domainSeparator: string): boolean {
-        const hash = signedListingDto.hash(domainSeparator);
-        return signedListingDto.owner === verifyMessage(arrayify(hash), signedListingDto.signature);
+    constructor(private readonly domainSeparator: string) {}
+
+    public isListingSignatureCorrect(signedListingDto: CreateListingDto): boolean {
+        const hash = signedListingDto.hash(this.domainSeparator);
+        return signedListingDto.owner === recoverAddress(arrayify(hash), signedListingDto.signature);
     }
 
-    public isBidSignatureCorrect(signedBidDto: CreateBidDto, domainSeparator: string): boolean {
-        const hash = signedBidDto.hash(domainSeparator);
-        return signedBidDto.bidder === verifyMessage(arrayify(hash), signedBidDto.signature);
+    public isBidSignatureCorrect(signedBidDto: CreateBidDto): boolean {
+        const hash = signedBidDto.hash(this.domainSeparator);
+        return signedBidDto.bidder === recoverAddress(arrayify(hash), signedBidDto.signature);
     }
 
-    public isSettlementSignatureCorrect(signedSettlementDto: CreateSettlementDto, domainSeparator: string): boolean {
-        const hash = signedSettlementDto.bid.hash(domainSeparator);
-        return signedSettlementDto.bid.listing.owner === verifyMessage(arrayify(hash), signedSettlementDto.signature);
+    public isSettlementSignatureCorrect(signedSettlementDto: CreateSettlementDto): boolean {
+        const hash = signedSettlementDto.bid.hash(this.domainSeparator);
+        return signedSettlementDto.bid.listing.owner === recoverAddress(arrayify(hash), signedSettlementDto.signature);
     }
 
     public static splitSignature(signatureHex: string): Signature {

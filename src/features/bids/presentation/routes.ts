@@ -2,7 +2,6 @@ import { Router } from 'express';
 
 import { BidRepositoryImpl, BidDatasourceImpl } from '../infrastructure';
 import { BidsController } from './controller';
-import { EvmUtilsImpl } from '../../shared';
 
 export class BidsRoutes {
 	static get routes(): Router {
@@ -11,8 +10,7 @@ export class BidsRoutes {
 		//* This datasource can be change
 		const datasource = new BidDatasourceImpl();
 		const repository = new BidRepositoryImpl(datasource);
-        const evmUtils = new EvmUtilsImpl();
-		const controller = new BidsController(repository, evmUtils);
+		const controller = new BidsController(repository);
 
 		router.get('/', controller.getAll);
 		router.post('/', controller.create);

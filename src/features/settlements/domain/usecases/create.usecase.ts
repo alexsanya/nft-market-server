@@ -1,4 +1,4 @@
-import { AppError, ValidationType, ZERO, DOMAIN_SEPARATOR} from '../../../../core';
+import { AppError, ValidationType, ZERO } from '../../../../core';
 import { CreateSettlementDto } from '../dtos';
 import { type SettlementEntity } from '../entities';
 import { type SettlementRepository } from '../repositories/repository';
@@ -18,13 +18,13 @@ export class CreateSettlement implements CreateSettlementUseCase {
 
 	async execute(data: CreateSettlementDto): Promise<SettlementEntity> {
 		const errors: ValidationType[] = [];
-        if (!this.evmUtils.isListingSignatureCorrect(data.bid.listing, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isListingSignatureCorrect(data.bid.listing)) {
 			errors.push({ fields: ['listing.signature'], constraint: 'Listing signature is invalid' });
         }
-        if (!this.evmUtils.isBidSignatureCorrect(data.bid, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isBidSignatureCorrect(data.bid)) {
 			errors.push({ fields: ['bid.signature'], constraint: 'Bid signature is invalid' });
         }
-        if (!this.evmUtils.isSettlementSignatureCorrect(data, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isSettlementSignatureCorrect(data)) {
 			errors.push({ fields: ['signature'], constraint: 'Settlement signature is invalid' });
         }
         //#TODO change for simulate transaction

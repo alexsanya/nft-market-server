@@ -1,4 +1,4 @@
-import { AppError, ValidationType, ZERO, DOMAIN_SEPARATOR} from '../../../../core';
+import { AppError, ValidationType, ZERO } from '../../../../core';
 import { OnChainDataSource } from '../../../shared';
 import { CreateBidDto } from '../dtos';
 import { type BidEntity } from '../entities';
@@ -19,10 +19,10 @@ export class CreateBid implements CreateBidUseCase {
 
 	async execute(data: CreateBidDto): Promise<BidEntity> {
 		const errors: ValidationType[] = [];
-        if (!this.evmUtils.isListingSignatureCorrect(data.listing, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isListingSignatureCorrect(data.listing)) {
 			errors.push({ fields: ['listing.signature'], constraint: 'Listing signature is invalid' });
         }
-        if (!this.evmUtils.isBidSignatureCorrect(data, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isBidSignatureCorrect(data)) {
 			errors.push({ fields: ['bid.signature'], constraint: 'Bid signature is invalid' });
         }
         // make sure owner posess listed NFT

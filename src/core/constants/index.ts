@@ -10,7 +10,36 @@ export const TEN = 10 as const;
 
 export const ADDRESS_REGEX = new RegExp(/^(0x)?[0-9a-fA-F]{40}$/);
 export const BYTES32_REGEX = new RegExp(/^(0x)?[0-9a-fA-F]{64}$/);
-export const DOMAIN_SEPARATOR = "0x89925f986235c2ea159d50a9fbe8b3c1715810e2df869dc3ea1aed1320f876c6";
+
+
+export const ETH_MAINNET_ID = "1";
+export const POLYGON_ID = "137";
+
+export const DOMAIN_SEPARATOR_POLYGON = "0x18fe943f718ca9eea10beb465fad697a409bfdab62830c6218e6333db82a854b";
+
+export const DOMAIN_SEPARATORS = {
+	[POLYGON_ID]: DOMAIN_SEPARATOR_POLYGON
+} as Record<string, string>;
+
+export const EIP712_LISTING_TYPES = {
+    Listing: [{
+        name: "nftContract",
+        type: "address"
+      },
+      {
+        name: "tokenId",
+        type: "uint256"
+      },
+      {
+        name: "minPriceCents",
+        type: "uint256"
+      },
+      {
+        name: "nonce",
+        type: "uint256"
+      },
+    ]
+};
 
 export const ERC721_ABI = [
 	"function ownerOf(uint256) external view returns (address)"
@@ -19,9 +48,6 @@ export const ERC721_ABI = [
 export const ERC20_ABI = [
 	"function balanceOf(address) external view returns (uint256)"
 ];
-
-export const ETH_MAINNET_ID = "1";
-export const POLYGON_ID = "137";
 
 export enum HttpCode {
 	OK = 200,

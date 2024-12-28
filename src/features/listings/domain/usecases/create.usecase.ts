@@ -1,4 +1,4 @@
-import { AppError, ValidationType, ZERO, DOMAIN_SEPARATOR} from '../../../../core';
+import { AppError, ValidationType, ZERO } from '../../../../core';
 import { CreateListingDto, NftOwnershipDto } from '../dtos';
 import { type ListingEntity } from '../entities';
 import { type ListingRepository } from '../repositories/repository';
@@ -18,7 +18,7 @@ export class CreateListing implements CreateListingUseCase {
 	async execute(data: CreateListingDto): Promise<ListingEntity> {
 		const errors: ValidationType[] = [];
         //#TODO refactor
-        if (!this.evmUtils.isListingSignatureCorrect(data, DOMAIN_SEPARATOR)) {
+        if (!this.evmUtils.isListingSignatureCorrect(data)) {
 			errors.push({ fields: ['signature'], constraint: 'Signature is invalid' });
         }
         // make sure owner posess listed NFT
