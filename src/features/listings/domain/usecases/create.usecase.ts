@@ -1,8 +1,8 @@
-import { AppError, ValidationType, ZERO } from '../../../../core';
-import { CreateListingDto, NftOwnershipDto } from '../dtos';
+import { AppError, type ValidationType, ZERO } from '../../../../core';
+import { type CreateListingDto, NftOwnershipDto } from '../dtos';
 import { type ListingEntity } from '../entities';
 import { type ListingRepository } from '../repositories/repository';
-import { OnChainDataSource, type EvmUtils } from '../../../shared';
+import { type OnChainDataSource, type EvmUtils } from '../../../shared';
 
 export interface CreateListingUseCase {
 	execute: (data: CreateListingDto) => Promise<ListingEntity>;
@@ -17,7 +17,6 @@ export class CreateListing implements CreateListingUseCase {
 
 	async execute(data: CreateListingDto): Promise<ListingEntity> {
 		const errors: ValidationType[] = [];
-		//#TODO refactor
 		if (!this.evmUtils.isListingSignatureCorrect(data)) {
 			errors.push({ fields: ['signature'], constraint: 'Signature is invalid' });
 		}
@@ -32,7 +31,7 @@ export class CreateListing implements CreateListingUseCase {
 		});
 		const isNftBelongsToOwner = await this.onChainDataSource.isNftBelongsToOwner(nftDto);
 		if (!isNftBelongsToOwner) {
-			errors.push({ fields: [], constraint: "Owner doesn't posess listed NFT" });
+			errors.push({ fields: [], constraint: 'Owner doesn`t posess listed NFT' });
 		}
 
 		if (errors.length > ZERO) {

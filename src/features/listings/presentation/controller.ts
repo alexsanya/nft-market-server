@@ -1,10 +1,9 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, Signature, HttpCode, ONE, TEN, envs, DOMAIN_SEPARATORS } from '../../../core';
-import { EvmUtilsImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type SuccessResponse, type Signature, HttpCode, ONE, TEN, envs, DOMAIN_SEPARATORS } from '../../../core';
+import { EvmUtilsImpl, PaginationDto, type PaginationResponseEntity, OnChainDataSourceImpl } from '../../shared';
 
 import { CreateListingDto, GetListings, CreateListing, type ListingEntity, type ListingRepository } from '../domain';
-import { OnChainDataSourceImpl } from '../../shared';
 import { JsonRpcProvider } from 'ethers';
 
 export interface RequestBody {
@@ -21,10 +20,6 @@ interface RequestQuery {
 	page: string;
 	limit: string;
 }
-
-(BigInt.prototype as any).toJSON = function () {
-	return this.toString();
-};
 
 export class ListingsController {
 	//* Dependency injection

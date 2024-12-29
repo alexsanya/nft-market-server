@@ -1,8 +1,8 @@
-import { AppError, ValidationType, ZERO } from '../../../../core';
-import { CreateSettlementDto } from '../dtos';
+import { AppError, type ValidationType, ZERO } from '../../../../core';
+import { type CreateSettlementDto } from '../dtos';
 import { type SettlementEntity } from '../entities';
 import { type SettlementRepository } from '../repositories/repository';
-import { OnChainDataSource, type EvmUtils } from '../../../shared';
+import { type OnChainDataSource, type EvmUtils } from '../../../shared';
 import { NftOwnershipDto } from '../../../listings';
 
 export interface CreateSettlementUseCase {
@@ -27,7 +27,7 @@ export class CreateSettlement implements CreateSettlementUseCase {
 		if (!this.evmUtils.isSettlementSignatureCorrect(data)) {
 			errors.push({ fields: ['signature'], constraint: 'Settlement signature is invalid' });
 		}
-		//#TODO change for simulate transaction
+		// #TODO change for simulate transaction
 		// make sure owner posess listed NFT
 		const { chainId, nftContract, tokenId, nonce, owner } = data.bid.listing;
 		const nftDto = NftOwnershipDto.create({
@@ -45,11 +45,11 @@ export class CreateSettlement implements CreateSettlementUseCase {
 		]);
 		// make sure NFT belongs to owner
 		if (!isNftBelongsToOwner) {
-			errors.push({ fields: [], constraint: "Owner doesn't posess listed NFT" });
+			errors.push({ fields: [], constraint: 'Owner doesn`t posess listed NFT' });
 		}
 		// make sure bidder has enough tokens
 		if (!isBidderPosessEnoughTokens) {
-			errors.push({ fields: [], constraint: "Bidder doesn't posess sufficient amount of tokens" });
+			errors.push({ fields: [], constraint: 'Bidder doesn`t posess sufficient amount of tokens' });
 		}
 
 		if (errors.length > ZERO) {

@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
-import { CreateSettlementDto } from '../dtos';
+import { type CreateSettlementDto } from '../dtos';
 import { type SettlementEntity } from '../entities';
 
 export abstract class SettlementDatasource {

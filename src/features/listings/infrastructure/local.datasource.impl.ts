@@ -1,7 +1,7 @@
 import { ONE } from '../../../core';
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 import { ListingEntity, type ListingDatasource } from '../domain';
-import { CreateListingDto } from '../domain/dtos';
+import { type CreateListingDto } from '../domain/dtos';
 
 const LISTING_MOCK: Array<Record<string, unknown>> = [
 	{

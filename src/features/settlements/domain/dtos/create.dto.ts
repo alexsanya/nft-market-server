@@ -1,5 +1,5 @@
 import { type ValidationType, AppError, ZERO } from '../../../../core';
-import { SignatureDto, type CoreDto } from '../../../shared';
+import { type SignatureDto, type CoreDto } from '../../../shared';
 import { CreateBidDto } from '../../../bids';
 
 export class CreateSettlementDto implements CoreDto<CreateSettlementDto> {

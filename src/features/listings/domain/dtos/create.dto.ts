@@ -1,5 +1,5 @@
 import { AbiCoder, isAddress, keccak256, toUtf8Bytes } from 'ethers';
-import { type ValidationType, AppError, ZERO, ADDRESS_REGEX, ONE } from '../../../../core';
+import { type ValidationType, AppError, ZERO, ONE } from '../../../../core';
 import { SignatureDto, type CoreDto } from '../../../shared';
 
 export class CreateListingDto implements CoreDto<CreateListingDto> {

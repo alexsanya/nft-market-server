@@ -1,16 +1,16 @@
 // src\features\todos\domain\entities\todo.entity.ts
 
-import { AppError, ZERO, ADDRESS_REGEX, Signature, BYTES32_REGEX } from '../../../../core';
+import { AppError, type Signature } from '../../../../core';
 import { isAddress, isBytes32 } from '../../../shared';
 
 export class ListingEntity {
 	constructor(
 		public owner: string,
-		public chainId: BigInt,
+		public chainId: bigint,
 		public minPriceCents: number,
 		public nftContract: string,
-		public tokenId: BigInt,
-		public nonce: BigInt,
+		public tokenId: bigint,
+		public nonce: bigint,
 		public signature: Signature
 	) {}
 

@@ -1,4 +1,4 @@
-import { AppError, Signature } from '../../../../core';
+import { AppError, type Signature } from '../../../../core';
 import { BidEntity } from '../../../bids';
 import { isBytes32 } from '../../../shared';
 
