@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
-import { CreateBidDto } from '../dtos';
+import { type CreateBidDto } from '../dtos';
 import { type BidEntity } from '../entities';
 
 export abstract class BidDatasource {

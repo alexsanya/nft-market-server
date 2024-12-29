@@ -1,5 +1,5 @@
 import { AbiCoder, keccak256, toUtf8Bytes } from 'ethers';
-import { type ValidationType, AppError, ZERO } from '../../../../core';
+import { type ValidationType, AppError, ONE, ZERO } from '../../../../core';
 import { isAddress, SignatureDto, type CoreDto } from '../../../shared';
 import { CreateListingDto } from '../../../listings';
 
@@ -8,8 +8,8 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 		public readonly bidder: string,
 		public readonly listing: CreateListingDto,
 		public readonly tokenAddress: string,
-		public readonly validUntil: BigInt,
-		public readonly value: BigInt,
+		public readonly validUntil: bigint,
+		public readonly value: bigint,
 		public readonly signature: SignatureDto
 	) {
 		this.validate(this);
@@ -30,6 +30,9 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 		}
 		if (typeof validUntil === 'undefined') {
 			errors.push({ fields: ['validUntil'], constraint: 'validUntil is required' });
+		}
+		if (typeof value === 'undefined') {
+			errors.push({ fields: ['value'], constraint: 'value is required' });
 		}
 		if (!signature) {
 			errors.push({ fields: ['signature'], constraint: 'signature is required' });
@@ -62,7 +65,7 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 			tokenAddress as string,
 			BigInt(validUntil as string),
 			BigInt(value as string),
-			signatureDto as SignatureDto
+			signatureDto
 		);
 	}
 
@@ -95,7 +98,7 @@ export class CreateBidDto implements CoreDto<CreateBidDto> {
 				]
 			)
 		);
-		//#TODO refactor
-		return keccak256('0x1901' + encoder.encode(['bytes32', 'bytes32'], [domainSeparator, data]).split('x')[1]);
+		// #TODO refactor
+		return keccak256('0x1901' + encoder.encode(['bytes32', 'bytes32'], [domainSeparator, data]).split('x')[ONE]);
 	}
 }
