@@ -1,6 +1,6 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 
-import { type BidEntity, type BidDatasource, type BidRepository, CreateBidDto } from '../domain';
+import { type BidEntity, type BidDatasource, type BidRepository, type CreateBidDto } from '../domain';
 
 export class BidRepositoryImpl implements BidRepository {
 	constructor(private readonly datasource: BidDatasource) {}

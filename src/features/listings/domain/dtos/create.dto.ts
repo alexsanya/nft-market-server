@@ -1,15 +1,15 @@
-import { AbiCoder, keccak256, toUtf8Bytes } from 'ethers';
-import { type ValidationType, AppError, ZERO, ADDRESS_REGEX } from '../../../../core';
+import { AbiCoder, isAddress, keccak256, toUtf8Bytes } from 'ethers';
+import { type ValidationType, AppError, ZERO, ADDRESS_REGEX, ONE } from '../../../../core';
 import { SignatureDto, type CoreDto } from '../../../shared';
 
 export class CreateListingDto implements CoreDto<CreateListingDto> {
 	private constructor(
 		public readonly owner: string,
-		public readonly chainId: BigInt,
+		public readonly chainId: bigint,
 		public readonly minPriceCents: number,
 		public readonly nftContract: string,
-		public readonly tokenId: BigInt,
-		public readonly nonce: BigInt,
+		public readonly tokenId: bigint,
+		public readonly nonce: bigint,
 		public readonly signature: SignatureDto
 	) {
 		this.validate(this);
@@ -19,10 +19,10 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		const errors: ValidationType[] = [];
 		const { owner, chainId, minPriceCents, nftContract, tokenId, nonce } = dto;
 
-		if (!owner || (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
+		if (!isAddress(owner)) {
 			errors.push({ fields: ['owner'], constraint: 'Owner is required and must be an address' });
 		}
-		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
+		if (!isAddress(nftContract)) {
 			errors.push({ fields: ['nftContract'], constraint: 'nftContract is required and must be an address' });
 		}
 		if (typeof chainId === 'undefined') {
@@ -62,7 +62,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 			nftContract as string,
 			BigInt(tokenId as string),
 			BigInt(nonce as string),
-			signatureDto as SignatureDto
+			signatureDto
 		);
 	}
 
@@ -96,7 +96,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 				]
 			)
 		);
-		//#TODO refactor
-		return keccak256('0x1901' + encoder.encode(['bytes32', 'bytes32'], [domainSeparator, data]).split('x')[1]);
+		// #TODO refactor
+		return keccak256('0x1901' + encoder.encode(['bytes32', 'bytes32'], [domainSeparator, data]).split('x')[ONE]);
 	}
 }

@@ -1,9 +1,8 @@
-import { AppError, ValidationType, ZERO } from '../../../../core';
-import { OnChainDataSource } from '../../../shared';
-import { CreateBidDto } from '../dtos';
+import { AppError, type ValidationType, ZERO } from '../../../../core';
+import { type OnChainDataSource, type EvmUtils } from '../../../shared';
+import { type CreateBidDto } from '../dtos';
 import { type BidEntity } from '../entities';
 import { type BidRepository } from '../repositories/repository';
-import { type EvmUtils } from '../../../shared';
 import { NftOwnershipDto } from '../../../listings';
 
 export interface CreateBidUseCase {
@@ -40,11 +39,11 @@ export class CreateBid implements CreateBidUseCase {
 		]);
 		// make sure NFT belongs to owner
 		if (!isNftBelongsToOwner) {
-			errors.push({ fields: [], constraint: "Owner doesn't posess listed NFT" });
+			errors.push({ fields: [], constraint: 'Owner doesn`t posess listed NFT' });
 		}
 		// make sure bidder has enough tokens
 		if (!isBidderPosessEnoughTokens) {
-			errors.push({ fields: [], constraint: "Bidder doesn't posess sufficient amount of tokens" });
+			errors.push({ fields: [], constraint: 'Bidder doesn`t posess sufficient amount of tokens' });
 		}
 
 		if (errors.length > ZERO) {

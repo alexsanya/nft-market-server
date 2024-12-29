@@ -1,6 +1,6 @@
 import { ONE } from '../../../core';
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
-import { BidEntity, CreateBidDto, type BidDatasource } from '../domain';
+import { BidEntity, type CreateBidDto, type BidDatasource } from '../domain';
 
 const BID_MOCK: Array<Record<string, unknown>> = [
 	{
@@ -74,10 +74,10 @@ export class BidDatasourceImpl implements BidDatasource {
 		};
 	}
 
-	public create(createDto: CreateBidDto): Promise<BidEntity> {
+	public async create(createDto: CreateBidDto): Promise<BidEntity> {
 		const json = createDto.toJson();
 		const newBid = BidEntity.fromJson(json);
 		BID_MOCK.push(json);
-		return Promise.resolve(newBid);
+		return await Promise.resolve(newBid);
 	}
 }

@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
-import { CreateListingDto } from '../dtos';
+import { type CreateListingDto } from '../dtos';
 import { type ListingEntity } from '../entities';
 
 export abstract class ListingDatasource {

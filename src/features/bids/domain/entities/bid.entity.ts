@@ -1,4 +1,4 @@
-import { AppError, Signature } from '../../../../core';
+import { AppError, type Signature } from '../../../../core';
 import { ListingEntity } from '../../../listings/domain/entities/listing.entity';
 import { isAddress, isBytes32 } from '../../../shared';
 
@@ -7,8 +7,8 @@ export class BidEntity {
 		public bidder: string,
 		public listing: ListingEntity,
 		public tokenAddress: string,
-		public validUntil: BigInt,
-		public value: BigInt,
+		public validUntil: bigint,
+		public value: bigint,
 		public signature: Signature
 	) {}
 

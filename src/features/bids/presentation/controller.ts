@@ -1,14 +1,8 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
-import {
-	EvmUtils,
-	EvmUtilsImpl,
-	OnChainDataSourceImpl,
-	PaginationDto,
-	type PaginationResponseEntity
-} from '../../shared';
-import { RequestBody as ListingRequestBody } from '../../listings/presentation/controller';
+import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, type Signature, TEN } from '../../../core';
+import { EvmUtilsImpl, OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
+import { type RequestBody as ListingRequestBody } from '../../listings/presentation/controller';
 
 import { GetBids, CreateBid, CreateBidDto, type BidEntity, type BidRepository } from '../domain';
 import { JsonRpcProvider } from 'ethers';
@@ -22,8 +16,8 @@ export interface RequestBody {
 	bidder: string;
 	listing: ListingRequestBody;
 	tokenAddress: string;
-	validUntil: BigInt;
-	value: BigInt;
+	validUntil: bigint;
+	value: bigint;
 	signature: Signature;
 }
 
