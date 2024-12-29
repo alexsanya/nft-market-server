@@ -6,7 +6,10 @@ export const ONE_THOUSAND = 1000 as const;
 
 export const ZERO = 0 as const;
 export const ONE = 1 as const;
+export const TWO = 2 as const;
 export const TEN = 10 as const;
+export const MINUS_TWO = -2 as const;
+export const SIXTY_FOUR = 64 as const;
 
 export const ADDRESS_REGEX = /^(0x)?[0-9a-fA-F]{40}$/;
 export const BYTES32_REGEX = /^(0x)?[0-9a-fA-F]{64}$/;

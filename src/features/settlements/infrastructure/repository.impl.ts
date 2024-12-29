@@ -4,7 +4,7 @@ import {
 	type SettlementDatasource,
 	type SettlementRepository,
 	type SettlementEntity,
-	CreateSettlementDto
+	type CreateSettlementDto
 } from '../domain';
 
 export class SettlementRepositoryImpl implements SettlementRepository {

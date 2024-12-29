@@ -1,5 +1,5 @@
 import { type ValidationType, AppError, ZERO } from '../../../../core';
-import { type SignatureDto, type CoreDto } from '../../../shared';
+import { SignatureDto, type CoreDto } from '../../../shared';
 import { CreateBidDto } from '../../../bids';
 
 export class CreateSettlementDto implements CoreDto<CreateSettlementDto> {
@@ -43,7 +43,7 @@ export class CreateSettlementDto implements CoreDto<CreateSettlementDto> {
 		if (errors.length > ZERO) throw AppError.badRequest('Error validating settlement', errors);
 		const signatureDto = SignatureDto.create(signature as object as Record<string, unknown>);
 		const bidDto = CreateBidDto.create(bid as object as Record<string, unknown>);
-		return new CreateSettlementDto(bidDto, signatureDto as SignatureDto);
+		return new CreateSettlementDto(bidDto, signatureDto);
 	}
 
 	public toJson(): Record<string, unknown> {

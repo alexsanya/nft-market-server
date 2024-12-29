@@ -1,11 +1,16 @@
-import { ADDRESS_REGEX, BYTES32_REGEX, ZERO } from '../../../../core';
+import { ADDRESS_REGEX, BYTES32_REGEX, ONE, TWO, ZERO } from '../../../../core';
 
-export function canConvertToStringToBigInt(str: string) {
+export function canConvertToStringToBigInt(str: string): boolean {
 	try {
-		const result = BigInt(str);
+		BigInt(str);
 		return true;
-	} catch (error: any) {
-		if (error instanceof TypeError || error.message.includes('Invalid or unexpected token')) {
+	} catch (error: unknown) {
+		if (
+			error instanceof TypeError ||
+			((error as Record<string, unknown>).message as Record<string, (text: string) => unknown>).includes(
+				'Invalid or unexpected token'
+			)
+		) {
 			return false;
 		}
 		throw error;
@@ -22,9 +27,9 @@ export function isBytes32(data: unknown): boolean {
 
 export function arrayify(data: string): Uint8Array {
 	const bytes = [];
-	const hexString = data.split('x')[1];
-	for (let i = 0; i < hexString.length; i += 2) {
-		bytes.push(parseInt(hexString.slice(i, i + 2), 16));
+	const hexString = data.split('x')[ONE];
+	for (let i = 0; i < hexString.length; i += TWO) {
+		bytes.push(parseInt(hexString.slice(i, i + TWO), 16));
 	}
 	return new Uint8Array(bytes);
 }

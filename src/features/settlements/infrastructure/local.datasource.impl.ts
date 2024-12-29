@@ -1,6 +1,6 @@
 import { ONE } from '../../../core';
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
-import { CreateSettlementDto, SettlementEntity, type SettlementDatasource } from '../domain';
+import { type CreateSettlementDto, SettlementEntity, type SettlementDatasource } from '../domain';
 
 const SETTLEMENT_MOCKS: Array<Record<string, unknown>> = [
 	{
@@ -88,10 +88,10 @@ export class SettlementDatasourceImpl implements SettlementDatasource {
 		};
 	}
 
-	public create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
+	public async create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
 		const json = createDto.toJson();
 		const newSettlement = SettlementEntity.fromJson(json);
 		SETTLEMENT_MOCKS.push(json);
-		return Promise.resolve(newSettlement);
+		return await Promise.resolve(newSettlement);
 	}
 }

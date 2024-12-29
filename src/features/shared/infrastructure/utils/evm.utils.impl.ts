@@ -1,9 +1,9 @@
 import { recoverAddress } from 'ethers';
-import { CreateListingDto } from '../../../listings';
-import { EvmUtils } from './evm.utils';
-import { Signature } from '../../../../core';
-import { CreateBidDto } from '../../../bids';
-import { CreateSettlementDto } from '../../../settlements';
+import { type CreateListingDto } from '../../../listings';
+import { type EvmUtils } from './evm.utils';
+import { MINUS_TWO, ONE, SIXTY_FOUR, ZERO, type Signature } from '../../../../core';
+import { type CreateBidDto } from '../../../bids';
+import { type CreateSettlementDto } from '../../../settlements';
 import { arrayify } from './types.utils';
 
 export class EvmUtilsImpl implements EvmUtils {
@@ -25,11 +25,11 @@ export class EvmUtilsImpl implements EvmUtils {
 	}
 
 	public static splitSignature(signatureHex: string): Signature {
-		const rawSig = signatureHex.split('x')[1];
+		const rawSig = signatureHex.split('x')[ONE];
 		return {
-			v: parseInt(`0x${rawSig.slice(-2)}`),
-			r: `0x${rawSig.slice(0, 64)}`,
-			s: `0x${rawSig.slice(64, -2)}`
+			v: parseInt(`0x${rawSig.slice(MINUS_TWO)}`),
+			r: `0x${rawSig.slice(ZERO, SIXTY_FOUR)}`,
+			s: `0x${rawSig.slice(SIXTY_FOUR, MINUS_TWO)}`
 		};
 	}
 }

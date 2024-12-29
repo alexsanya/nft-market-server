@@ -1,6 +1,6 @@
-import { CreateBidDto } from '../../../bids';
-import { CreateListingDto } from '../../../listings';
-import { CreateSettlementDto } from '../../../settlements';
+import { type CreateBidDto } from '../../../bids';
+import { type CreateListingDto } from '../../../listings';
+import { type CreateSettlementDto } from '../../../settlements';
 
 export abstract class EvmUtils {
 	abstract isListingSignatureCorrect(signedListingDto: CreateListingDto): boolean;

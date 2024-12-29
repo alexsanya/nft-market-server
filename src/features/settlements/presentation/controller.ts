@@ -1,8 +1,8 @@
 import { type NextFunction, type Request, type Response } from 'express';
 
-import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, Signature, TEN } from '../../../core';
+import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, type Signature, TEN } from '../../../core';
 import { EvmUtilsImpl, OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
-import { RequestBody as BidRequestBody } from '../../bids/presentation/controller';
+import { type RequestBody as BidRequestBody } from '../../bids/presentation/controller';
 
 import {
 	GetSettlements,
@@ -22,10 +22,6 @@ interface RequestBody {
 	bid: BidRequestBody;
 	signature: Signature;
 }
-
-(BigInt.prototype as any).toJSON = function () {
-	return this.toString();
-};
 
 export class SettlementController {
 	//* Dependency injection

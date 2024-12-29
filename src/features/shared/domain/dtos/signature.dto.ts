@@ -1,4 +1,5 @@
-import { type ValidationType, AppError, ZERO, BYTES32_REGEX } from '../../../../core';
+import { type ValidationType, AppError, ZERO } from '../../../../core';
+import { isBytes32 } from '../../infrastructure';
 import { type CoreDto } from './core.dto';
 
 export class SignatureDto implements CoreDto<SignatureDto> {
@@ -17,10 +18,10 @@ export class SignatureDto implements CoreDto<SignatureDto> {
 		if (!v) {
 			errors.push({ fields: ['v'], constraint: 'v is required' });
 		}
-		if (!r || (r as string).length === ZERO || !BYTES32_REGEX.test(r as string)) {
+		if (!isBytes32(r)) {
 			errors.push({ fields: ['r'], constraint: 'r is required and must be bytes32' });
 		}
-		if (!s || (s as string).length === ZERO || !BYTES32_REGEX.test(s as string)) {
+		if (!isBytes32(s)) {
 			errors.push({ fields: ['s'], constraint: 's is required and must be bytes32' });
 		}
 
