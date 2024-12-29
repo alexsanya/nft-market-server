@@ -35,6 +35,10 @@ export class RedisClient {
 				type: SchemaFieldTypes.TEXT,
 				AS: 'owner'
 			},
+			'$.nftContract': {
+				type: SchemaFieldTypes.TEXT,
+				AS: 'nftContract'
+			},
 			'$.tokenId': {
 				type: SchemaFieldTypes.TEXT,
 				AS: 'tokenId'

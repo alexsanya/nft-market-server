@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
-import { type CreateListingDto, type ListingDatasource, ListingEntity } from '../domain';
+import { type CreateListingDto, type FiltersDto, type ListingDatasource, ListingEntity } from '../domain';
 import { ONE } from '../../../core';
 import { AbiCoder, keccak256 } from 'ethers';
 import { RedisClient } from '../../shared/infrastructure/redisClient.impl';
@@ -7,11 +7,16 @@ import { RedisClient } from '../../shared/infrastructure/redisClient.impl';
 const LISTING_INDEX_KEY = 'listing:index';
 
 export class ListingDatasourceImpl implements ListingDatasource {
-	public async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<ListingEntity[]>> {
+	public async getAll(
+		pagination: PaginationDto,
+		filters: FiltersDto
+	): Promise<PaginationResponseEntity<ListingEntity[]>> {
 		const { page, limit } = pagination;
+		const { collection } = filters;
 		const client = await RedisClient.getInstance().getClient();
 
-		const { documents } = await client.ft.search(LISTING_INDEX_KEY, '*', {
+		const query = collection ? `(@nftContract:'${collection}')` : '*';
+		const { documents } = await client.ft.search(LISTING_INDEX_KEY, query, {
 			LIMIT: {
 				from: 0,
 				size: pagination.limit

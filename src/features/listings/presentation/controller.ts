@@ -3,7 +3,14 @@ import { type NextFunction, type Request, type Response } from 'express';
 import { type SuccessResponse, type Signature, HttpCode, ONE, TEN, envs, DOMAIN_SEPARATORS } from '../../../core';
 import { EvmUtilsImpl, PaginationDto, type PaginationResponseEntity, OnChainDataSourceImpl } from '../../shared';
 
-import { CreateListingDto, GetListings, CreateListing, type ListingEntity, type ListingRepository } from '../domain';
+import {
+	CreateListingDto,
+	GetListings,
+	CreateListing,
+	FiltersDto,
+	type ListingEntity,
+	type ListingRepository
+} from '../domain';
 import { JsonRpcProvider } from 'ethers';
 
 export interface RequestBody {
@@ -19,6 +26,7 @@ export interface RequestBody {
 interface RequestQuery {
 	page: string;
 	limit: string;
+	collection: string;
 }
 
 (BigInt.prototype as unknown as { toJSON: () => string }).toJSON = function () {
@@ -35,10 +43,11 @@ export class ListingsController {
 		res: Response<SuccessResponse<PaginationResponseEntity<ListingEntity[]>>>,
 		next: NextFunction
 	): void => {
-		const { page = ONE, limit = TEN } = req.query;
+		const { page = ONE, limit = TEN, collection } = req.query;
 		const paginationDto = PaginationDto.create({ page: +page, limit: +limit });
+		const filtersDto = FiltersDto.create({ collection });
 		new GetListings(this.repository)
-			.execute(paginationDto)
+			.execute(paginationDto, filtersDto)
 			.then((result) => res.json({ data: result }))
 			.catch((error) => {
 				next(error);
