@@ -8,8 +8,8 @@ import { DOMAIN_SEPARATORS } from '../core';
 
 console.log('Generate wallet and signed listing');
 
-const BUYER_PRIVATE_KEY = process.env['OWNER_PRIVATE_KEY']!;
-const OWNER_PRIVATE_KEY = process.env['BUYER_PRIVATE_KEY']!;
+const BUYER_PRIVATE_KEY = process.env['BUYER_PRIVATE_KEY']!;
+const OWNER_PRIVATE_KEY = process.env['OWNER_PRIVATE_KEY']!;
 const MOCK_SIGNATURE = {
 	v: 5,
 	r: '0x05416460deb76d57af601be17e777b93592d8d4d4a4096c57876a91c84f4a712',
