@@ -38,7 +38,7 @@ export class Server {
 		);
 
 		this.app.use(this.apiPrefix, this.routes);
-		
+
 		// Test rest api
 		this.app.get('/', (_req: Request, res: Response) => {
 			return res.status(HttpCode.OK).send({

@@ -5,7 +5,7 @@ export class SignatureDto implements CoreDto<SignatureDto> {
 	private constructor(
 		public readonly v: number,
 		public readonly r: string,
-		public readonly s: string,
+		public readonly s: string
 	) {
 		this.validate(this);
 	}
@@ -17,10 +17,10 @@ export class SignatureDto implements CoreDto<SignatureDto> {
 		if (!v) {
 			errors.push({ fields: ['v'], constraint: 'v is required' });
 		}
-		if (!r ||  (r as string).length === ZERO || !BYTES32_REGEX.test(r as string)) {
+		if (!r || (r as string).length === ZERO || !BYTES32_REGEX.test(r as string)) {
 			errors.push({ fields: ['r'], constraint: 'r is required and must be bytes32' });
 		}
-		if (!s ||  (s as string).length === ZERO || !BYTES32_REGEX.test(s as string)) {
+		if (!s || (s as string).length === ZERO || !BYTES32_REGEX.test(s as string)) {
 			errors.push({ fields: ['s'], constraint: 's is required and must be bytes32' });
 		}
 
@@ -35,10 +35,6 @@ export class SignatureDto implements CoreDto<SignatureDto> {
 	 */
 	public static create(object: Record<string, unknown>): SignatureDto {
 		const { v, r, s } = object;
-		return new SignatureDto(
-			v as number,
-			r as string,
-            s as string
-		);
+		return new SignatureDto(v as number, r as string, s as string);
 	}
 }

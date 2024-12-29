@@ -1,4 +1,4 @@
-import { AbiCoder, keccak256, toUtf8Bytes } from "ethers";
+import { AbiCoder, keccak256, toUtf8Bytes } from 'ethers';
 import { type ValidationType, AppError, ZERO, ADDRESS_REGEX } from '../../../../core';
 import { SignatureDto, type CoreDto } from '../../../shared';
 
@@ -10,7 +10,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		public readonly nftContract: string,
 		public readonly tokenId: BigInt,
 		public readonly nonce: BigInt,
-		public readonly signature: SignatureDto,
+		public readonly signature: SignatureDto
 	) {
 		this.validate(this);
 	}
@@ -19,7 +19,7 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 		const errors: ValidationType[] = [];
 		const { owner, chainId, minPriceCents, nftContract, tokenId, nonce } = dto;
 
-		if (!owner ||  (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
+		if (!owner || (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
 			errors.push({ fields: ['owner'], constraint: 'Owner is required and must be an address' });
 		}
 		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
@@ -50,11 +50,11 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 	public static create(object: Record<string, unknown>): CreateListingDto {
 		const errors: ValidationType[] = [];
 		const { owner, chainId, minPriceCents, nftContract, tokenId, signature, nonce } = object;
-		if (!signature || typeof(signature) !== "object") {
+		if (!signature || typeof signature !== 'object') {
 			errors.push({ fields: ['signature'], constraint: 'signature is required' });
 		}
 		if (errors.length > ZERO) throw AppError.badRequest('Error validating listing', errors);
-		const signatureDto = SignatureDto.create((signature as object) as Record<string, unknown>);
+		const signatureDto = SignatureDto.create(signature as object as Record<string, unknown>);
 		return new CreateListingDto(
 			owner as string,
 			BigInt(chainId as string),
@@ -79,29 +79,24 @@ export class CreateListingDto implements CoreDto<CreateListingDto> {
 				r: this.signature.r,
 				s: this.signature.s
 			}
-		}
+		};
 	}
 
 	public hash(domainSeparator: string): string {
 		const encoder = new AbiCoder();
 		const data = keccak256(
 			encoder.encode(
-				["bytes32","address","uint256","uint256","uint256"],
+				['bytes32', 'address', 'uint256', 'uint256', 'uint256'],
 				[
-					keccak256(toUtf8Bytes("Listing(address nftContract,uint256 tokenId,uint256 minPriceCents,uint256 nonce)")),
-                    this.nftContract,
-                    this.tokenId,
-                    this.minPriceCents,
-                    this.nonce
+					keccak256(toUtf8Bytes('Listing(address nftContract,uint256 tokenId,uint256 minPriceCents,uint256 nonce)')),
+					this.nftContract,
+					this.tokenId,
+					this.minPriceCents,
+					this.nonce
 				]
 			)
 		);
 		//#TODO refactor
-		return keccak256("0x1901"+encoder.encode(
-			["bytes32","bytes32"],
-			[
-				domainSeparator,
-				data
-			]).split('x')[1]);
+		return keccak256('0x1901' + encoder.encode(['bytes32', 'bytes32'], [domainSeparator, data]).split('x')[1]);
 	}
 }

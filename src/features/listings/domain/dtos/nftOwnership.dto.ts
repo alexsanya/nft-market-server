@@ -1,12 +1,12 @@
-import { ADDRESS_REGEX, AppError, ValidationType, ZERO } from "../../../../core";
-import { CoreDto } from "../../../shared";
+import { ADDRESS_REGEX, AppError, ValidationType, ZERO } from '../../../../core';
+import { CoreDto } from '../../../shared';
 
 export class NftOwnershipDto implements CoreDto<NftOwnershipDto> {
 	private constructor(
-        public readonly chainId: BigInt,
-        public readonly nftContract: string,
-        public readonly tokenId: BigInt,
-        public readonly owner: string
+		public readonly chainId: BigInt,
+		public readonly nftContract: string,
+		public readonly tokenId: BigInt,
+		public readonly owner: string
 	) {
 		this.validate(this);
 	}
@@ -15,7 +15,7 @@ export class NftOwnershipDto implements CoreDto<NftOwnershipDto> {
 		const errors: ValidationType[] = [];
 		const { chainId, nftContract, tokenId, owner } = dto;
 
-		if (!owner ||  (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
+		if (!owner || (owner as string).length === ZERO || !ADDRESS_REGEX.test(owner as string)) {
 			errors.push({ fields: ['owner'], constraint: 'Owner is required and must be an address' });
 		}
 		if (!nftContract || (nftContract as string).length === ZERO || !ADDRESS_REGEX.test(nftContract as string)) {
@@ -40,10 +40,10 @@ export class NftOwnershipDto implements CoreDto<NftOwnershipDto> {
 	public static create(object: Record<string, unknown>): NftOwnershipDto {
 		const { chainId, nftContract, tokenId, owner } = object;
 		return new NftOwnershipDto(
-            BigInt(chainId as string),
-            nftContract as string,
-            BigInt(tokenId as string),
-            owner as string
+			BigInt(chainId as string),
+			nftContract as string,
+			BigInt(tokenId as string),
+			owner as string
 		);
 	}
 }

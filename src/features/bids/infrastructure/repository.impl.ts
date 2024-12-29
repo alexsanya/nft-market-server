@@ -1,11 +1,6 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 
-import {
-	type BidEntity,
-	type BidDatasource,
-	type BidRepository,
-    CreateBidDto
-} from '../domain';
+import { type BidEntity, type BidDatasource, type BidRepository, CreateBidDto } from '../domain';
 
 export class BidRepositoryImpl implements BidRepository {
 	constructor(private readonly datasource: BidDatasource) {}
@@ -14,7 +9,7 @@ export class BidRepositoryImpl implements BidRepository {
 		return await this.datasource.getAll(pagination);
 	}
 
-    async create(createDto: CreateBidDto): Promise<BidEntity> {
-        return await this.datasource.create(createDto);
-    }
+	async create(createDto: CreateBidDto): Promise<BidEntity> {
+		return await this.datasource.create(createDto);
+	}
 }

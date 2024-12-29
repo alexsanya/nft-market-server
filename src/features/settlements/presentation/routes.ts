@@ -11,7 +11,7 @@ export class SettlementRoutes {
 		//* This datasource can be change
 		const datasource = new SettlementDatasourceImpl();
 		const repository = new SettlementRepositoryImpl(datasource);
-        const evmUtils = new EvmUtilsImpl();
+		const evmUtils = new EvmUtilsImpl();
 		const controller = new SettlementController(repository, evmUtils);
 
 		router.get('/', controller.getAll);

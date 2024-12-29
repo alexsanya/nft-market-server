@@ -4,8 +4,8 @@ import { CreateBidDto } from '../../../bids';
 
 export class CreateSettlementDto implements CoreDto<CreateSettlementDto> {
 	private constructor(
-        public readonly bid: CreateBidDto,
-		public readonly signature: SignatureDto,
+		public readonly bid: CreateBidDto,
+		public readonly signature: SignatureDto
 	) {
 		this.validate(this);
 	}
@@ -34,29 +34,26 @@ export class CreateSettlementDto implements CoreDto<CreateSettlementDto> {
 	public static create(object: Record<string, unknown>): CreateSettlementDto {
 		const errors: ValidationType[] = [];
 		const { bid, signature } = object;
-		if (!signature || typeof(signature) !== 'object') {
+		if (!signature || typeof signature !== 'object') {
 			errors.push({ fields: ['signature'], constraint: 'signature is required' });
 		}
-        if (!bid || typeof(bid) !== 'object') {
+		if (!bid || typeof bid !== 'object') {
 			errors.push({ fields: ['bid'], constraint: 'bid is required' });
-        }
+		}
 		if (errors.length > ZERO) throw AppError.badRequest('Error validating settlement', errors);
-		const signatureDto = SignatureDto.create((signature as object) as Record<string, unknown>);
-        const bidDto = CreateBidDto.create((bid as object) as Record<string, unknown>);
-		return new CreateSettlementDto(
-            bidDto,
-			signatureDto as SignatureDto
-		);
+		const signatureDto = SignatureDto.create(signature as object as Record<string, unknown>);
+		const bidDto = CreateBidDto.create(bid as object as Record<string, unknown>);
+		return new CreateSettlementDto(bidDto, signatureDto as SignatureDto);
 	}
 
 	public toJson(): Record<string, unknown> {
 		return {
-            bid: this.bid.toJson(),
+			bid: this.bid.toJson(),
 			signature: {
 				v: this.signature.v,
 				r: this.signature.r,
 				s: this.signature.s
 			}
-		}
+		};
 	}
 }

@@ -4,5 +4,5 @@ import { type ListingEntity } from '../entities';
 
 export abstract class ListingDatasource {
 	abstract getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<ListingEntity[]>>;
-    abstract create(createDto: CreateListingDto): Promise<ListingEntity>;
+	abstract create(createDto: CreateListingDto): Promise<ListingEntity>;
 }

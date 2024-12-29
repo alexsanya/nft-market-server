@@ -2,9 +2,9 @@ import { type PaginationDto, type PaginationResponseEntity } from '../../shared'
 
 import {
 	type SettlementDatasource,
-    type SettlementRepository,
-    type SettlementEntity,
-    CreateSettlementDto,
+	type SettlementRepository,
+	type SettlementEntity,
+	CreateSettlementDto
 } from '../domain';
 
 export class SettlementRepositoryImpl implements SettlementRepository {
@@ -14,8 +14,7 @@ export class SettlementRepositoryImpl implements SettlementRepository {
 		return await this.datasource.getAll(pagination);
 	}
 
-    async create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
-        return await this.datasource.create(createDto);
-    }
-
+	async create(createDto: CreateSettlementDto): Promise<SettlementEntity> {
+		return await this.datasource.create(createDto);
+	}
 }

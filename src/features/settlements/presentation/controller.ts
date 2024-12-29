@@ -5,9 +5,9 @@ import { EvmUtilsImpl, OnChainDataSourceImpl, PaginationDto, type PaginationResp
 import { RequestBody as BidRequestBody } from '../../bids/presentation/controller';
 
 import {
-    GetSettlements,
-    CreateSettlement,
-    CreateSettlementDto,
+	GetSettlements,
+	CreateSettlement,
+	CreateSettlementDto,
 	type SettlementEntity,
 	type SettlementRepository
 } from '../domain';
@@ -19,19 +19,17 @@ interface RequestQuery {
 }
 
 interface RequestBody {
-    bid: BidRequestBody;
-    signature: Signature;
+	bid: BidRequestBody;
+	signature: Signature;
 }
 
 (BigInt.prototype as any).toJSON = function () {
-    return this.toString();
+	return this.toString();
 };
 
 export class SettlementController {
 	//* Dependency injection
-	constructor(
-        private readonly repository: SettlementRepository
-    ) {}
+	constructor(private readonly repository: SettlementRepository) {}
 
 	public getAll = (
 		req: Request<unknown, unknown, unknown, RequestQuery>,
@@ -48,16 +46,17 @@ export class SettlementController {
 			});
 	};
 
-
-    public create = (
+	public create = (
 		req: Request<unknown, unknown, RequestBody>,
 		res: Response<SuccessResponse<SettlementEntity>>,
 		next: NextFunction
 	): void => {
 		const { bid, signature } = req.body;
 		const createDto = CreateSettlementDto.create({ bid, signature });
-        const onChainDataSource = new OnChainDataSourceImpl(new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId]));
-        const evmUtils = new EvmUtilsImpl(DOMAIN_SEPARATORS[bid.listing.chainId]);
+		const onChainDataSource = new OnChainDataSourceImpl(
+			new JsonRpcProvider(envs.PROVIDER_JSON_RPC_ENDPOINTS[bid.listing.chainId])
+		);
+		const evmUtils = new EvmUtilsImpl(DOMAIN_SEPARATORS[bid.listing.chainId]);
 		new CreateSettlement(this.repository, onChainDataSource, evmUtils)
 			.execute(createDto)
 			.then((result) => res.status(HttpCode.CREATED).json({ data: result }))
