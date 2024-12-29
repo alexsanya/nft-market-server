@@ -1,12 +1,17 @@
 import { envs } from './core/config/env';
 import { Server } from './server';
 import { AppRoutes } from './routes';
+import { RedisClient } from './features/shared/infrastructure/redisClient.impl';
 
 (() => {
-	main();
+	void main();
 })();
 
-function main(): void {
+async function main(): Promise<void> {
+	const redisClient = RedisClient.getInstance();
+	await redisClient.init();
+	await redisClient.populate();
+
 	const server = new Server({
 		port: envs.PORT,
 		apiPrefix: envs.API_PREFIX,

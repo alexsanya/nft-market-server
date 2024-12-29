@@ -21,6 +21,11 @@ interface RequestQuery {
 	limit: string;
 }
 
+(BigInt.prototype as unknown as { toJSON: () => string }).toJSON = function () {
+	// eslint-disable-next-line
+	return this.toString();
+};
+
 export class ListingsController {
 	//* Dependency injection
 	constructor(private readonly repository: ListingRepository) {}

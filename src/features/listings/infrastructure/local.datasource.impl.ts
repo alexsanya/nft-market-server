@@ -33,6 +33,8 @@ const LISTING_MOCK: Array<Record<string, unknown>> = [
 ];
 
 export class ListingDatasourceImpl implements ListingDatasource {
+	public async init(): Promise<void> {}
+
 	public async getAll(pagination: PaginationDto): Promise<PaginationResponseEntity<ListingEntity[]>> {
 		const { page, limit } = pagination;
 

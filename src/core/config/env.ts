@@ -11,5 +11,6 @@ export const envs = {
 	PORT: get('PORT').required().asPortNumber(),
 	API_PREFIX: get('API_PREFIX').default('/api/v1').asString(),
 	NODE_ENV: get('NODE_ENV').default('development').asString(),
+	REDIS_HOST: get('REDIS_HOST').default('redis://localhost:6379').asString(),
 	PROVIDER_JSON_RPC_ENDPOINTS
 };
