@@ -1,4 +1,4 @@
-import { type RedisClientType, RediSearchSchema, SchemaFieldTypes } from 'redis';
+import { type RedisClientType, type RediSearchSchema, SchemaFieldTypes } from 'redis';
 
 export const LISTING_INDEX_KEY = 'listing:index';
 export const LISTING_KEY_PREFIX = 'listing:';

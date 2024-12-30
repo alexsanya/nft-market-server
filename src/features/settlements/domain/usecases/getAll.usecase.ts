@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../../shared';
-import { FiltersDto } from '../dtos';
+import { type FiltersDto } from '../dtos';
 import { type SettlementEntity } from '../entities';
 import { type SettlementRepository } from '../repositories/repository';
 

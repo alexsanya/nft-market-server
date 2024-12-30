@@ -1,5 +1,5 @@
 import { type PaginationDto, type PaginationResponseEntity, RedisClient } from '../../shared';
-import { type FiltersDto, SettlementEntity, type CreateSettlementDto, SettlementDatasource } from '../domain';
+import { type FiltersDto, SettlementEntity, type CreateSettlementDto, type SettlementDatasource } from '../domain';
 import { DOMAIN_SEPARATORS, ONE } from '../../../core';
 import { SETTLEMENT_INDEX_KEY } from './initializer';
 

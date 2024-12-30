@@ -1,4 +1,4 @@
-import { RedisClientType, RediSearchSchema, SchemaFieldTypes } from 'redis';
+import { type RedisClientType, type RediSearchSchema, SchemaFieldTypes } from 'redis';
 
 export const SETTLEMENT_INDEX_KEY = 'settlement:index';
 export const SETTLEMENT_KEY_PREFIX = 'settlement:';
