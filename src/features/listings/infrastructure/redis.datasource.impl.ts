@@ -1,10 +1,7 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 import { type CreateListingDto, type FiltersDto, type ListingDatasource, ListingEntity } from '../domain';
-import { ONE } from '../../../core';
-import { AbiCoder, keccak256 } from 'ethers';
-import { RedisClient } from '../../shared/infrastructure/redisClient.impl';
-
-const LISTING_INDEX_KEY = 'listing:index';
+import { DOMAIN_SEPARATORS, ONE } from '../../../core';
+import { LISTING_INDEX_KEY, RedisClient } from '../../shared/infrastructure/redisClient.impl';
 
 export class ListingDatasourceImpl implements ListingDatasource {
 	public async getAll(
@@ -43,10 +40,7 @@ export class ListingDatasourceImpl implements ListingDatasource {
 		const client = await RedisClient.getInstance().getClient();
 		const json = createDto.toJson();
 		const newListing = ListingEntity.fromJson(json);
-		const encoder = new AbiCoder();
-		const hash = keccak256(
-			encoder.encode(['address', 'address', 'uint256'], [createDto.owner, createDto.nftContract, createDto.tokenId])
-		);
+		const hash = createDto.hash(DOMAIN_SEPARATORS[createDto.chainId.toString()]);
 		// eslint-disable-next-line
 		await client.json.set(`listing:${hash}`, '.', json as any);
 		return newListing;

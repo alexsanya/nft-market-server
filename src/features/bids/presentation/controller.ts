@@ -4,12 +4,13 @@ import { type SuccessResponse, DOMAIN_SEPARATORS, envs, HttpCode, ONE, type Sign
 import { EvmUtilsImpl, OnChainDataSourceImpl, PaginationDto, type PaginationResponseEntity } from '../../shared';
 import { type RequestBody as ListingRequestBody } from '../../listings/presentation/controller';
 
-import { GetBids, CreateBid, CreateBidDto, type BidEntity, type BidRepository } from '../domain';
+import { GetBids, CreateBid, CreateBidDto, type BidEntity, type BidRepository, FiltersDto } from '../domain';
 import { JsonRpcProvider } from 'ethers';
 
 interface RequestQuery {
 	page: string;
 	limit: string;
+	owner: string;
 }
 
 export interface RequestBody {
@@ -30,10 +31,11 @@ export class BidsController {
 		res: Response<SuccessResponse<PaginationResponseEntity<BidEntity[]>>>,
 		next: NextFunction
 	): void => {
-		const { page = ONE, limit = TEN } = req.query;
+		const { owner, page = ONE, limit = TEN } = req.query;
 		const paginationDto = PaginationDto.create({ page: +page, limit: +limit });
+		const filters = FiltersDto.create({ owner });
 		new GetBids(this.repository)
-			.execute(paginationDto)
+			.execute(paginationDto, filters)
 			.then((result) => res.json({ data: result }))
 			.catch((error) => {
 				next(error);
