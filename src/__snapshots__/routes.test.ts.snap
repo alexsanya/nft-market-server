@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`test listing routes should return listings /listings 1`] = `
+{
+  "data": {
+    "currentPage": 1,
+    "nextPage": null,
+    "prevPage": null,
+    "results": [
+      {
+        "chainId": "11155111",
+        "minPriceCents": "150000",
+        "nftContract": "0xf44b599a0aB6b8cb14E992994BEC0dc59dF883B2",
+        "nonce": "0",
+        "owner": "0x3897326cEda92B3da2c27a224D6fDCFefCaCf57A",
+        "signature": {
+          "r": "0x5ef4620f4b296763ff15209456d75e868f149a8d1c6821f1ff11fab70bca0ee0",
+          "s": "0x337ddcb26ea919a2bf5ad6e1d49bd6951a27d1d2e940a5543a70eabc5dbe237e",
+          "v": 28,
+        },
+        "tokenId": "1",
+      },
+    ],
+    "total": 1,
+    "totalPages": 1,
+  },
+}
+`;
