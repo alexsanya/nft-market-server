@@ -9,13 +9,15 @@ import {
 	CreateSettlement,
 	CreateSettlementDto,
 	type SettlementEntity,
-	type SettlementRepository
+	type SettlementRepository,
+	FiltersDto
 } from '../domain';
 import { JsonRpcProvider } from 'ethers';
 
 interface RequestQuery {
 	page: string;
 	limit: string;
+	bidder: string;
 }
 
 interface RequestBody {
@@ -32,10 +34,11 @@ export class SettlementController {
 		res: Response<SuccessResponse<PaginationResponseEntity<SettlementEntity[]>>>,
 		next: NextFunction
 	): void => {
-		const { page = ONE, limit = TEN } = req.query;
+		const { bidder, page = ONE, limit = TEN } = req.query;
 		const paginationDto = PaginationDto.create({ page: +page, limit: +limit });
+		const filtersDto = FiltersDto.create({ bidder });
 		new GetSettlements(this.repository)
-			.execute(paginationDto)
+			.execute(paginationDto, filtersDto)
 			.then((result) => res.json({ data: result }))
 			.catch((error) => {
 				next(error);

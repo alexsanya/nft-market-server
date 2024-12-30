@@ -1,6 +1,7 @@
-import { BID_INDEX_KEY, type PaginationDto, type PaginationResponseEntity, RedisClient } from '../../shared';
+import { type PaginationDto, type PaginationResponseEntity, RedisClient } from '../../shared';
 import { BidEntity, type CreateBidDto, type FiltersDto, type BidDatasource } from '../domain';
 import { DOMAIN_SEPARATORS, ONE } from '../../../core';
+import { BID_INDEX_KEY } from './initializer';
 
 export class BidDatasourceImpl implements BidDatasource {
 	public async getAll(pagination: PaginationDto, filters: FiltersDto): Promise<PaginationResponseEntity<BidEntity[]>> {

@@ -1,7 +1,8 @@
 import { type PaginationDto, type PaginationResponseEntity } from '../../shared';
 import { type CreateListingDto, type FiltersDto, type ListingDatasource, ListingEntity } from '../domain';
 import { DOMAIN_SEPARATORS, ONE } from '../../../core';
-import { LISTING_INDEX_KEY, RedisClient } from '../../shared/infrastructure/redisClient.impl';
+import { RedisClient } from '../../shared/infrastructure/redisClient.impl';
+import { LISTING_INDEX_KEY } from './initializer';
 
 export class ListingDatasourceImpl implements ListingDatasource {
 	public async getAll(
